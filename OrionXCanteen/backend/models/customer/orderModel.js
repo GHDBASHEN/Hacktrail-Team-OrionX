@@ -8,27 +8,51 @@ export const create = async (customerId, items, specialNotes) => {
     await connection.beginTransaction();
 
     try {
-        let totalPrice = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-        const token = uuidv4();
+        // Step 1: Get the official prices for all food items from the database
+        const foodIds = items.map(item => item.food_id);
+        if (foodIds.length === 0) {
+            throw new Error("Cannot create an order with no items.");
+        }
+        
+        const priceQuery = "SELECT food_id, price FROM foods WHERE food_id IN (?)";
+        const [priceRows] = await connection.query(priceQuery, [foodIds]);
 
-        // Step 1: Insert the main order record. The trigger will create the 'order_id'.
+        // Create a map for easy and fast price lookup (e.g., 'FOOD000001' -> 250.00)
+        const priceMap = new Map(priceRows.map(row => [row.food_id, parseFloat(row.price)]));
+
+        // Step 2: Calculate total price and prepare items using the SECURE prices from the database
+        let totalPrice = 0;
+        const itemsWithSecurePrices = items.map(item => {
+            const securePrice = priceMap.get(item.food_id);
+            if (securePrice === undefined) {
+                // This handles cases where a food_id from the cart doesn't exist in the DB
+                throw new Error(`Invalid or unavailable food item provided: ${item.food_id}`);
+            }
+            totalPrice += securePrice * item.quantity;
+            return {
+                ...item,
+                price_per_item: securePrice // Use the price from the database, not the request
+            };
+        });
+
+        // Step 3: Insert the main order record with the securely calculated total price
+        const token = uuidv4();
         await connection.execute(
             'INSERT INTO orders (customer_id, total_price, token, special_notes) VALUES (?, ?, ?, ?)',
             [customerId, totalPrice, token, specialNotes]
         );
 
-        // Step 2: Retrieve the 'order_id' that the trigger just generated for this customer.
-        // This is the corrected part.
+        // Step 4: Retrieve the 'order_id' that the trigger just generated for this customer
         const [[{ order_id }]] = await connection.execute(
             'SELECT order_id FROM orders WHERE customer_id = ? ORDER BY order_time DESC LIMIT 1',
             [customerId]
         );
 
-        // Step 3: Insert each item into the 'order_items' table using the retrieved order_id.
-        const orderItemsPromises = items.map(item => {
+        // Step 5: Insert each item with its secure price into the 'order_items' table
+        const orderItemsPromises = itemsWithSecurePrices.map(item => {
             return connection.execute(
                 'INSERT INTO order_items (order_id, food_id, quantity, price_per_item) VALUES (?, ?, ?, ?)',
-                [order_id, item.food_id, item.quantity, item.price]
+                [order_id, item.food_id, item.quantity, item.price_per_item] // Use the secure price
             );
         });
         await Promise.all(orderItemsPromises);
