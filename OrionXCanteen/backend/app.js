@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 import authRoutes from './routes/authRoutes.js';
 import userRouter from './routes/userRouter.js';
 import mailRouter from './routes/mailRouter.js';
+import orderRoutes from './routes/orderRoutes.js'; // Uncomment when order routes are implemented
 
 
 
@@ -21,7 +22,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/user', userRouter);
 app.use('/api/mail', mailRouter);
 
-
+//order routes
+app.use('/api/orders',orderRoutes); // Uncomment when order routes are implemented
 
 // Global error handler
 app.use((err, req, res, next) => {
