@@ -5,6 +5,8 @@ import DefaultSAN from '../components/superAdminSideNavs/DefaultSAN';
 import BookingManagementSAN from '../components/superAdminSideNavs/BookingManagementSAN';
 import { HiMenu, HiX } from 'react-icons/hi';
 import OverView from './superAdmin/OverView';
+import CreateCategory from '../pages/Admin/CreateCategory.js';
+import FoodManagement from '../pages/Admin/FoodManagement.js';
 
 const SuperAdminDB = () => {
   const [topNav, setTopNav] = useState();
@@ -124,7 +126,23 @@ const SuperAdminDB = () => {
 
       {/* Desktop Left Sidebar */}
       <div className="hidden md:flex flex-col rounded-r-3xl overflow-hidden w-full md:w-1/5 lg:w-1/6 border-l border-gray-200 bg-white">
+        {/* Render navigation based on topNav state */}
         {renderNavs()}
+        {/* Create Category Button under Overview */}
+        <button
+          type="button"
+          className="m-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+          onClick={() => setRenderContent(() => () => <CreateCategory />)}
+        >
+          Create Category
+        </button>
+        <button
+          type="button"
+          className="m-4 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+          onClick={() => setRenderContent(() => () => <FoodManagement />)}
+        >
+          Food Management
+        </button>
       </div>
 
       {/* Main Content Area */}
@@ -160,6 +178,8 @@ const SuperAdminDB = () => {
         {/* Main Content */}
         <div className="p-2 md:p-4">
           {renderContent()}
+          {/* Remove default CreateCategory rendering here */}
+          {/* <CreateCategory /> */}
         </div>
       </div>
     </div>
