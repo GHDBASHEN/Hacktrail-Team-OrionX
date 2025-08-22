@@ -48,7 +48,8 @@ export const getOrderById = async (req, res) => {
 // READ: Get all orders for the logged-in student
 export const getMyOrders = async (req, res) => {
     try {
-        const orders = await orderModel.findAllByCustomer(req.user.id);
+        const customerId = req.params.customerId;
+        const orders = await orderModel.findAllByCustomer(customerId);
         res.status(200).json(orders);
     } catch (error) {
         res.status(500).json({ message: "Failed to retrieve your orders." });
@@ -86,7 +87,9 @@ export const updateOrderStatus = async (req, res) => {
 // CANCEL: Student cancels their own order
 export const cancelMyOrder = async (req, res) => {
     try {
-        const success = await orderModel.cancel(req.params.id, req.user.id);
+
+        const customerId = req.params.customerId;
+        const success = await orderModel.cancel(req.params.id, customerId);
         if (success) {
             res.status(200).json({ message: "Order cancelled successfully." });
         } else {

@@ -10,7 +10,7 @@ const router = express.Router();
 router.post('/:customerId', createOrder);
 
 // GET /api/orders/my-orders -> Get the logged-in student's order history
-router.get('/my-orders',getMyOrders);
+router.get('/my-orders/:customerId',getMyOrders);
 
 // PATCH /api/orders/:id/cancel -> A student cancels their own order
 router.patch('/:id/cancel',cancelMyOrder);
