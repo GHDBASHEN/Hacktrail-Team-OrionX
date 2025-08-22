@@ -18,15 +18,12 @@ export const Login = () => {
             const { userEmail, id, role, token, refreshToken } = await loginUser(user);
             login(userEmail, id, role, token, refreshToken);
 
-            if (role === 'super_admin') {
+            if (role === 'admin') {
                 navigate('/superAdmin');
-            } else if (role === 'sub_admin') {
-                navigate('/subAdmin');
-            } else if (role === 'employees') {
-                navigate('/employees');
-            } else if (role === 'customers') {
+            } else if (role === 'customer') {
                 navigate('/');
-            }
+            } 
+            
         } catch (error) {
             console.error('Login error:', error);
             const errorMessage = error?.response?.data?.message || 'Login failed';

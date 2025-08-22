@@ -3,8 +3,6 @@ import superAdminHome from '../../pages/superAdmin/SuperAdminHome';
 import AddEmployee from '../../pages/superAdmin/AddEmployee';
 //import GetEmployees from '../../pages/superAdmin/GetEmployee';
 import UpdateEmployees from '../../pages/superAdmin/UpdateEmployees';
-import Help from '../help/Help';
-import EmpHelpData from '../help/empHelpData.json'
 import { Logout } from '../../components/Logout'
 
 
@@ -28,10 +26,6 @@ const UserManagementSAN = ({ setRenderContent }) => {
       case 'updateEmployeesById':
         setClickedItem('updateEmployeesById');
         setRenderContent(() => () => <UpdateEmployees />);
-        break;
-      case 'help':
-        setClickedItem('help');
-        setRenderContent(() => () => <Help tz={EmpHelpData} />);
         break;
       default:
         setClickedItem('updateEmployeesById');

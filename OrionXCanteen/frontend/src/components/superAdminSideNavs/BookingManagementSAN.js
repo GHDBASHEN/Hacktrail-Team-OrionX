@@ -1,14 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Logout } from '../../components/Logout'
-import CalenderView from '../../pages/superAdmin/CalenderView';
 import BookingView from '../../pages/superAdmin/BookingView';
-import VenueView from '../../pages/superAdmin/VenueView';
-import BookingHistoryView from '../../pages/superAdmin/BookingsAnalyze';
-import InvoiceView from '../../pages/superAdmin/InvoiceView';
-import BookingsView from '../../pages/superAdmin/BookingsAnalyze';
-import BookingsAnalyze from '../../pages/superAdmin/BookingsAnalyze';
-import Help from '../help/Help';
-import HelpData from '../help/bookingHelpData.json';
 
 const BookingManagementSAN = ({ setRenderContent }) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -22,33 +14,13 @@ const BookingManagementSAN = ({ setRenderContent }) => {
     
     const handleRenderContent = (display) => {
         switch (display) {
-            case 'calender-view':
-                setClickedItem('calender-view');
-                setRenderContent(() => () => <CalenderView />);
-                break;
             case 'booking-view':
                 setClickedItem('booking-view');
                 setRenderContent(() => () => <BookingView />);
                 break;
-            case 'venue-view':
-                setClickedItem('venue-view');
-                setRenderContent(() => () => <VenueView />);
-                break;
-            case 'booking-analyze':
-                setClickedItem('booking-analyze');
-                setRenderContent(() => () => <BookingsAnalyze />);
-                break;
-            case 'invoice-view':
-                setClickedItem('invoice-view');
-                setRenderContent(() => () => <InvoiceView />);
-                break;
-            case 'help':
-                setClickedItem('help');
-                setRenderContent(() => () => <Help tz={HelpData} />);
-                break;
             default:
-                setClickedItem('calender-view');
-                setRenderContent(() => () => <CalenderView />);
+                setClickedItem('booking-view');
+                setRenderContent(() => () => <BookingView />);
         }
     };
     return (

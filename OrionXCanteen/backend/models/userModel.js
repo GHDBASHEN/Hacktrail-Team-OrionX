@@ -67,7 +67,7 @@ export const addEmployeeModel = async (name, phone, email, password) => {
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const [result] = await pool.query(
-    "INSERT INTO employees (name, phone, email, hire_date, created_at, role, password) VALUES (?, ?, ?, ?, ?, ?, ?)",
+    "INSERT INTO employees (name, phone, email, hire_date, created_at, user_role, password) VALUES (?, ?, ?, ?, ?, ?, ?)",
     [name, phone, email , hireDate, hireDate, 'employee', hashedPassword]
   );
   return result[0];

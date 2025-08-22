@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import UserManagementSAN from '../components/superAdminSideNavs/UserManagementSAN';
-import EventManagementSAN from '../components/superAdminSideNavs/EventManagementSAN';
-import MenuManagementSAN from '../components/superAdminSideNavs/MenuManagementSAN';
 import DefaultSAN from '../components/superAdminSideNavs/DefaultSAN';
-import PayrollManagementSAN from '../components/superAdminSideNavs/PayrollManagementSAN';
 import BookingManagementSAN from '../components/superAdminSideNavs/BookingManagementSAN';
-import CustomersManagementSAN from '../components/superAdminSideNavs/CustomersManagementSAN';
 import { HiMenu, HiX } from 'react-icons/hi';
+import OverView from './superAdmin/OverView';
 
 const SuperAdminDB = () => {
   const [topNav, setTopNav] = useState();
@@ -16,11 +13,6 @@ const SuperAdminDB = () => {
   const [isMobileTopNavOpen, setIsMobileTopNavOpen] = useState(false);
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   // Reset to default content (OverView) when topNav changes
-  //   setRenderContent(() => () => <OverView />);
-  // }, [topNav]);
-  
   // Close mobile menus when screen resizes to desktop
   useEffect(() => {
     const handleResize = () => {
@@ -38,11 +30,7 @@ const SuperAdminDB = () => {
   const renderNavs = () => {
     switch (topNav) {
       case 'A': return <UserManagementSAN setRenderContent={setRenderContent} closeMobileMenu={() => setIsMobileSidebarOpen(false)} />;
-      case 'C': return <EventManagementSAN setRenderContent={setRenderContent} closeMobileMenu={() => setIsMobileSidebarOpen(false)} />;
-      case 'D': return <MenuManagementSAN setRenderContent={setRenderContent} closeMobileMenu={() => setIsMobileSidebarOpen(false)} />;
-      case 'B': return <PayrollManagementSAN setRenderContent={setRenderContent} closeMobileMenu={() => setIsMobileSidebarOpen(false)} />;
       case 'E': return <BookingManagementSAN setRenderContent={setRenderContent} closeMobileMenu={() => setIsMobileSidebarOpen(false)} />;
-      case 'F': return <CustomersManagementSAN setRenderContent={setRenderContent} closeMobileMenu={() => setIsMobileSidebarOpen(false)} />;
       default: return <DefaultSAN setRenderContent={setRenderContent} closeMobileMenu={() => setIsMobileSidebarOpen(false)} />;
     }
   };
@@ -50,11 +38,7 @@ const SuperAdminDB = () => {
   // Mobile navigation items
   const mobileNavItems = [
     { id: 'A', label: 'Employees' },
-    { id: 'B', label: 'Payroll' },
-    { id: 'C', label: 'Events' },
-    { id: 'D', label: 'Menus' },
-    { id: 'E', label: 'Bookings' },
-    { id: 'F', label: 'Customers' },
+    { id: 'E', label: 'Payroll' }
   ];
 
   return (

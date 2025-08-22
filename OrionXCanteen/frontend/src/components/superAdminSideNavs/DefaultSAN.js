@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Logout } from '../../components/Logout';
 import OverView from '../../pages/superAdmin/OverView';
-import SettingView from '../../pages/superAdmin/SettingView';
 import { HiOutlineViewGrid, HiOutlineCog, HiOutlineLogout } from 'react-icons/hi';
 
 const DefaultSAN = ({ setRenderContent, closeMobileMenu }) => {
@@ -13,9 +12,6 @@ const DefaultSAN = ({ setRenderContent, closeMobileMenu }) => {
         setClickedItem('overview');
         setRenderContent(() => () => <OverView />);
         break;
-      case 'setting':
-        setClickedItem('setting');
-        setRenderContent(() => () => <SettingView />);
         break;
       default:
         setRenderContent(() => () => <OverView />);
