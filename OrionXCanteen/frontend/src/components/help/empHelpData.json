@@ -1,0 +1,189 @@
+
+{
+  "sections": [
+    {
+      "id": "add-employees",
+      "title": "Add Employee Help",
+      "intro": "The Add Employee page allows you to add new employees to the system with proper validation.",
+      "features": [
+        {
+          "title": "Filling Out the Form",
+          "description": "Complete all required fields with valid information",
+          "icon": "📝",
+          "subsections": [
+            {
+              "title": "Employee Name",
+              "bullets": [
+                "Enter employees's full name",
+                "Only letters allowed (no numbers)",
+                "Must be at least 2 characters"
+              ]
+            },
+            {
+              "title": "Phone Number",
+              "bullets": [
+                "Enter 10-digit phone number",
+                "Format: 0712345678",
+                "Only numbers allowed"
+              ]
+            },
+            {
+              "title": "Email Address",
+              "bullets": [
+                "Enter valid email address",
+                "Must contain '@' symbol",
+                "Standard format: name@domain.com"
+              ]
+            },
+            {
+              "title": "Birth Date",
+              "bullets": [
+                "Select date from date picker",
+                "Employee must be at least 18 years old",
+                "Cannot be a future date"
+              ]
+            },
+            {
+              "title": "Service Charge",
+              "bullets": [
+                "Enter percentage value",
+                "Must be between 0 and 100",
+                "Decimal values allowed"
+              ]
+            },
+            {
+              "title": "Basic Salary",
+              "bullets": [
+                "Enter positive whole number",
+                "No commas or currency symbols",
+                "Example: 35000"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Submitting the Form",
+          "description": "Create new employees records",
+          "icon": "✅",
+          "bullets": [
+            "Click 'Add Employee' button",
+            "System validates all fields automatically",
+            "Form clears on successful submission",
+            "Error messages show below invalid fields"
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "type": "important",
+          "title": "Validation Rules",
+          "bullets": [
+            "All fields are required",
+            "Name must contain only letters",
+            "Phone must be exactly 10 digits",
+            "Email must contain '@' symbol",
+            "Age must be 18+ years",
+            "Service charge must be 0-100%",
+            "Salary must be positive integer"
+          ]
+        },
+        {
+          "type": "tip",
+          "title": "Best Practices",
+          "bullets": [
+            "Double-check contact information before submitting",
+            "Verify age eligibility before entry",
+            "Confirm salary with HR department",
+            "Keep service charge consistent within roles"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "manage-employees",
+      "title": "Manage Employee Help",
+      "intro": "The Manage Employee page allows you to view, search, filter, edit, and update all employees in the system.",
+      "features": [
+        {
+          "title": "Viewing Employees",
+          "description": "Comprehensive employees listing with all details",
+          "icon": "👥",
+          "bullets": [
+            "Columns: ID, Name, Phone, Email, Birth Date, Salary, Service Charge, Hire Date, Actions",
+            "Status indicators show active/inactive"
+          ]
+        },
+        {
+          "title": "Searching Employees",
+          "description": "Find specific employees quickly",
+          "icon": "🔍",
+          "bullets": [
+            "Search by name or email",
+            "Real-time filtering as you type",
+            "No search button needed - results update automatically"
+          ]
+        },
+        {
+          "title": "Filtering by Status",
+          "description": "View employees by activity status",
+          "icon": "📊",
+          "bullets": [
+            "Click 'Active' button for current employees",
+            "Click 'Inactive' button for former employees",
+            "Use 'Back' button to return to full list"
+          ]
+        },
+        {
+          "title": "Editing Employee Details",
+          "description": "Update employees information",
+          "icon": "✏️",
+          "bullets": [
+            "Click Actions button in last column",
+            "Select 'Edit' to modify details",
+            "Update name, phone, email, birth date, salary, service charge, hire date",
+            "Click 'Update' to save changes"
+          ]
+        },
+        {
+          "title": "Changing Employee Status",
+          "description": "Activate or deactivate employees",
+          "icon": "🔄",
+          "bullets": [
+            "Click Actions button in last column",
+            "Select 'Change Status'",
+            "Choose new status (Active/Inactive)",
+            "Click 'Update Status' to confirm"
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "type": "important",
+          "title": "Update Requirements",
+          "bullets": [
+            "All fields validated during editing",
+            "Phone must remain 10 digits",
+            "Email must contain '@' symbol",
+            "Service charge must be 0-100%",
+            "Salary must be positive integer"
+          ]
+        },
+        {
+          "type": "tip",
+          "title": "Management Tips",
+          "bullets": [
+            "Use status filters for payroll processing",
+            "Search before editing to locate employees quickly",
+            "Verify hire dates before status changes",
+            "Maintain accurate birth dates for compliance"
+          ]
+        }
+      ]
+    }
+  ],
+  "contact": {
+    "title": "Employee Management Support",
+    "email": "hrsupport@bookingmanager.com",
+    "phone": "+1 (555) 234-5678"
+  }
+}

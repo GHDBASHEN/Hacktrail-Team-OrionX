@@ -1,0 +1,442 @@
+
+{
+  "sections": [
+    {
+      "id": "event-assignment",
+      "title": "Event Assignment Help",
+      "intro": "The Event Assignment page allows you to assign employees to events with specific roles, and manage all staff assignments.",
+      "features": [
+        {
+          "title": "Assigning an Employee to an Event",
+          "description": "Fill out the form to create new staff assignments",
+          "icon": "👥",
+          "bullets": [
+            "Select the event from dropdown",
+            "Choose employees to assign",
+            "Select role (Owner, Chef, Waiter, Security, Decorator)",
+            "Click 'Create Assignment' to save"
+          ]
+        },
+        {
+          "title": "Filtering and Searching Assignments",
+          "description": "Refine the assignments view",
+          "icon": "🔍",
+          "bullets": [
+            "Filter by event, year, or month using dropdowns",
+            "Search by event name, employees name, or role"
+          ]
+        },
+        {
+          "title": "Viewing Assignments",
+          "description": "All assignments are listed in a table with columns for Event, Employee, Role, Date, and Actions.",
+          "icon": "📋"
+        },
+        {
+          "title": "Editing an Assignment",
+          "description": "Update existing assignments",
+          "icon": "✏️",
+          "bullets": [
+            "Click Edit button in Actions column",
+            "Select new role in modal",
+            "Click Update to save or Cancel to discard"
+          ]
+        },
+        {
+          "title": "Deleting an Assignment",
+          "description": "Remove staff assignments",
+          "icon": "🗑️",
+          "bullets": [
+            "Click Delete button in Actions column",
+            "Confirm deletion in popup dialog"
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "type": "tip",
+          "title": "Tips",
+          "bullets": [
+            "Combine filters and search for quick assignment lookup",
+            "Changes reflect immediately in assignments table",
+            "Check error messages for troubleshooting"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "see-events",
+      "title": "See Events Help",
+      "intro": "The See Events page allows you to view, search, filter, edit, and delete all events in the system.",
+      "features": [
+        {
+          "title": "Viewing Events",
+          "description": "All events are listed in a comprehensive table",
+          "icon": "📅",
+          "bullets": [
+            "Columns: Event, Type, Date, Details, Actions",
+            "Weddings show groom & bride names",
+            "Custom events show contact person"
+          ]
+        },
+        {
+          "title": "Searching and Filtering",
+          "description": "Find specific events quickly",
+          "icon": "🔎",
+          "bullets": [
+            "Search by name, groom/bride, contact person, or ID",
+            "Filter by type (All, Weddings, Custom)",
+            "Filter by year and month"
+          ]
+        },
+        {
+          "title": "Viewing Event Details",
+          "description": "Click on any event row to open detailed popup",
+          "icon": "👁️"
+        },
+        {
+          "title": "Editing an Event",
+          "description": "Update event information",
+          "icon": "✏️",
+          "bullets": [
+            "Click Edit button in Actions column",
+            "Update event details in modal",
+            "Wedding events: Edit groom/bride names and contacts",
+            "Custom events: Edit contact person and timings"
+          ]
+        },
+        {
+          "title": "Deleting an Event",
+          "description": "Remove events from the system",
+          "icon": "🗑️",
+          "bullets": [
+            "Click Delete button in Actions column",
+            "Confirm deletion in dialog"
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "type": "tip",
+          "title": "Best Practices",
+          "bullets": [
+            "Use filters and search together for precise results",
+            "Event type cannot be changed after creation",
+            "Check for conflicts before deleting events"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "event-service-list",
+      "title": "Event Service List Help",
+      "intro": "The Event Service List page allows you to manage all event services (catering, decoration, etc.) available for events.",
+      "features": [
+        {
+          "title": "Viewing Services",
+          "description": "All services are listed in a table with ID, Name, Image, and Actions columns",
+          "icon": "📋"
+        },
+        {
+          "title": "Adding a New Service",
+          "description": "Create new event services",
+          "icon": "➕",
+          "bullets": [
+            "Click 'Add New Service' button",
+            "Enter service details",
+            "Upload service image",
+            "Submit form to add service"
+          ]
+        },
+        {
+          "title": "Editing a Service",
+          "description": "Update existing services",
+          "icon": "✏️",
+          "bullets": [
+            "Click Edit button in Actions column",
+            "Update information in form",
+            "Submit to save changes"
+          ]
+        },
+        {
+          "title": "Deleting a Service",
+          "description": "Remove services from the system",
+          "icon": "🗑️",
+          "bullets": [
+            "Click Delete button in Actions column",
+            "Confirm deletion in dialog"
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "type": "important",
+          "title": "Important Notes",
+          "bullets": [
+            "Image previews show for available services",
+            "Deletion is permanent and cannot be undone",
+            "Changes reflect immediately in service list"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vendor-list",
+      "title": "Vendor Management Help",
+      "intro": "The Vendor List page allows you to manage all event vendors and their assigned services.",
+      "features": [
+        {
+          "title": "Viewing Vendors",
+          "description": "Vendors listed with ID, Contact, Email, Services, and Actions",
+          "icon": "📋",
+          "bullets": [
+            "Click vendor row to expand details",
+            "View address and all assigned services",
+            "+N more indicator for vendors with >3 services"
+          ]
+        },
+        {
+          "title": "Adding a New Vendor",
+          "description": "Create new vendor records",
+          "icon": "➕",
+          "bullets": [
+            "Click 'Add New Vendor' button",
+            "Fill vendor details in form",
+            "Assign services after creation"
+          ]
+        },
+        {
+          "title": "Editing a Vendor",
+          "description": "Update vendor information",
+          "icon": "✏️",
+          "bullets": [
+            "Click Edit button (pencil icon)",
+            "Update vendor details",
+            "Save changes"
+          ]
+        },
+        {
+          "title": "Assigning Services",
+          "description": "Manage services for vendors",
+          "icon": "📝",
+          "bullets": [
+            "Click Assign Services button (clipboard icon)",
+            "Select/deselect services in modal",
+            "Save service assignments"
+          ]
+        },
+        {
+          "title": "Deleting a Vendor",
+          "description": "Remove vendors from the system",
+          "icon": "🗑️",
+          "bullets": [
+            "Click Delete button (trash icon)",
+            "Confirm deletion in dialog"
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "type": "tip",
+          "title": "Usage Tips",
+          "bullets": [
+            "Assign services immediately after vendor creation",
+            "Use expandable rows to view full vendor details",
+            "Service assignments can be modified anytime"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "customers-service-assignment",
+      "title": "Customer Service Assignment Help",
+      "intro": "The Customer Event Service List page allows you to manage which event services are assigned to which customers and bookings.",
+      "features": [
+        {
+          "title": "Viewing Assignments",
+          "description": "All assignments listed with ID, Customer, Service, Booking ID, and Actions",
+          "icon": "📋"
+        },
+        {
+          "title": "Creating Assignments",
+          "description": "Assign services to customers",
+          "icon": "➕",
+          "bullets": [
+            "Click 'Create New Assignment' button",
+            "Fill assignment details",
+            "Submit to add to list"
+          ]
+        },
+        {
+          "title": "Editing Assignments",
+          "description": "Update existing assignments",
+          "icon": "✏️",
+          "bullets": [
+            "Click Edit button (pencil icon)",
+            "Update assignment details",
+            "Save changes"
+          ]
+        },
+        {
+          "title": "Deleting Assignments",
+          "description": "Remove service assignments",
+          "icon": "🗑️",
+          "bullets": [
+            "Click Delete button (trash icon)",
+            "Confirm deletion"
+          ]
+        },
+        {
+          "title": "Filtering and Searching",
+          "description": "Find specific assignments",
+          "icon": "🔍",
+          "bullets": [
+            "Filter by customers, service, or booking ID",
+            "Search by customers name, service, booking ID, or email",
+            "Click 'Clear All Filters' to reset"
+          ]
+        },
+        {
+          "title": "Sorting Assignments",
+          "description": "Organize assignment view",
+          "icon": "⬆️⬇️",
+          "bullets": [
+            "Click column headers to sort",
+            "Toggle between ascending/descending order"
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "type": "tip",
+          "title": "Best Practices",
+          "bullets": [
+            "Combine filters and sorting for efficient management",
+            "Reset filters when switching between customers",
+            "Verify assignments before finalizing"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "table-chair-arrangement",
+      "title": "Table & Chair Arrangement Help",
+      "intro": "The Admin Table & Chair Arrangement page allows you to manage table and chair arrangements and save reusable table design templates.",
+      "features": [
+        {
+          "title": "Tab Navigation",
+          "description": "Switch between arrangement types",
+          "icon": "↔️",
+          "bullets": [
+            "Arrangements: Manage event-specific setups",
+            "Table Designs: Manage reusable templates"
+          ]
+        },
+        {
+          "title": "Creating/Editing Arrangements",
+          "description": "Manage event table setups",
+          "icon": "🪑",
+          "bullets": [
+            "Enter Arrangement ID",
+            "Set Head Table Pax count",
+            "Select Table Design for color presets",
+            "Add table reservations with numbers and names"
+          ]
+        },
+        {
+          "title": "Managing Table Designs",
+          "description": "Create reusable templates",
+          "icon": "🎨",
+          "bullets": [
+            "Define Top Cloth, Table Cloth, Bow, and Chair Cover colors",
+            "Save as reusable design templates"
+          ]
+        },
+        {
+          "title": "Applying Designs",
+          "description": "Use templates for arrangements",
+          "icon": "💡",
+          "bullets": [
+            "Click 'Apply Design' on design cards",
+            "Color fields auto-fill in arrangement form"
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "type": "important",
+          "title": "Requirements",
+          "bullets": [
+            "At least one table reservation required per arrangement",
+            "Color fields become read-only after applying design",
+            "Design templates save color schemes only"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bar-management",
+      "title": "Bar Management Help",
+      "intro": "The Admin Bar Management Page allows you to manage all bar-related services for events, including bar times, bites, liquor, and soft drinks.",
+      "features": [
+        {
+          "title": "Tab Navigation",
+          "description": "Access different bar service categories",
+          "icon": "📌",
+          "bullets": [
+            "BAR: Manage bar times and setups",
+            "BITE: Manage snack items",
+            "LIQUOR: Manage alcoholic beverages",
+            "SOFT DRINK: Manage non-alcoholic beverages"
+          ]
+        },
+        {
+          "title": "Filtering Records",
+          "description": "Find specific bar services",
+          "icon": "🔍",
+          "bullets": [
+            "Filter by event name",
+            "Filter by customers name",
+            "Table updates as you type"
+          ]
+        },
+        {
+          "title": "Managing Records",
+          "description": "View and manage bar services",
+          "icon": "📊",
+          "bullets": [
+            "All prices shown in LKR format",
+            "Update button for editing records",
+            "Delete button for removing records"
+          ]
+        },
+        {
+          "title": "Updating Records",
+          "description": "Modify bar service details",
+          "icon": "✏️",
+          "bullets": [
+            "Click Update button in Actions column",
+            "Edit fields in modal (some fields read-only)",
+            "BITE items: Can only update quantity",
+            "Save Changes or Cancel"
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "type": "tip",
+          "title": "Usage Tips",
+          "bullets": [
+            "Use tabs to quickly switch service categories",
+            "Currency formatting applied automatically",
+            "Changes reflect immediately after saving"
+          ]
+        }
+      ]
+    }
+  ],
+  "contact": {
+    "title": "Need Event Management Assistance?",
+    "email": "eventsupport@bookingmanager.com",
+    "phone": "+1 (555) 987-6543"
+  }
+}

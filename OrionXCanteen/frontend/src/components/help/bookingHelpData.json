@@ -1,0 +1,283 @@
+
+{
+  "sections": [
+    {
+      "id": "calendar",
+      "title": "Calendar View Help",
+      "intro": "The Calendar View helps you easily track and manage bookings by date and status.",
+      "features": [
+        {
+          "title": "Navigating Months",
+          "description": "Use the left (←) and right (→) arrow buttons at the top to move between months.",
+          "icon": "↔️"
+        },
+        {
+          "title": "Viewing Bookings by Status",
+          "description": "Click the filter button (funnel icon) to select which booking status to display: All, Confirmed, Pending, Cancelled, or Done.",
+          "icon": "🔍"
+        },
+        {
+          "title": "Understanding Calendar Cells",
+          "description": "Each cell represents a day. The number badge shows booking count for the day. Colored labels indicate booking status counts.",
+          "icon": "📅",
+          "bullets": [
+            "Each cell represents a day",
+            "Number badge shows booking count",
+            "Colored labels indicate status counts"
+          ]
+        },
+        {
+          "title": "Viewing Booking Details",
+          "description": "Click on a day with bookings to see a preview. Click on a booking preview to open detailed information.",
+          "icon": "👁️"
+        },
+        {
+          "title": "Today's Highlight",
+          "description": "The current day is outlined in blue for easy identification.",
+          "icon": "📍"
+        },
+        {
+          "title": "Loading Indicator",
+          "description": "A spinning icon appears when bookings are loading.",
+          "icon": "⏳"
+        }
+      ],
+      "notes": [
+        {
+          "type": "tip",
+          "title": "Pro Tip",
+          "content": "Click on any booking to see comprehensive details including customers information, venue details, and booking status."
+        }
+      ]
+    },
+    {
+      "id": "add-booking",
+      "title": "Add Booking Help",
+      "intro": "The Add Bookings page allows you to create new bookings for customers.",
+      "features": [
+        {
+          "title": "Select Customer",
+          "description": "Choose between new or existing customers",
+          "icon": "👤",
+          "subsections": [
+            {
+              "title": "New Customer",
+              "bullets": [
+                "Click the 'New Customer' tab",
+                "Fill in customers details",
+                "Click 'Add Customer'"
+              ]
+            },
+            {
+              "title": "Existing Customer",
+              "bullets": [
+                "Click the 'Existing Customer' tab",
+                "Search by name, email, phone, or NIC",
+                "Select customers from results"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Fill Booking Information",
+          "description": "Complete all required fields",
+          "icon": "📝",
+          "bullets": [
+            "Select booking date",
+            "Choose 'Day' or 'Night' time slot",
+            "Select venue from dropdown",
+            "Enter number of guests",
+            "Enter additional hours (optional)",
+            "Indicate if key money deposit is paid"
+          ]
+        },
+        {
+          "title": "Submit the Booking",
+          "description": "Click 'Add Booking' to create the booking. A confirmation message will appear upon success.",
+          "icon": "✅"
+        },
+        {
+          "title": "Status Bar",
+          "description": "The status bar shows selected customers, their ID, and booking status.",
+          "icon": "📊"
+        }
+      ],
+      "notes": [
+        {
+          "type": "important",
+          "title": "Important Notes",
+          "bullets": [
+            "You must select or add a customers before creating a booking",
+            "All required fields must be filled to submit",
+            "Double-check contact information for accuracy"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "venue",
+      "title": "Venue Management Help",
+      "intro": "The View Venues page allows you to manage all venue information.",
+      "features": [
+        {
+          "title": "Viewing Venues",
+          "description": "All venues are listed in a table with details such as name, time slot, location, capacity, price, and more.",
+          "icon": "🏟️"
+        },
+        {
+          "title": "Adding a New Venue",
+          "description": "Create a new venue entry",
+          "icon": "➕",
+          "bullets": [
+            "Click Action button → 'New Venue'",
+            "Fill venue details in new row",
+            "Click 'Add' to save or 'Cancel' to discard"
+          ]
+        },
+        {
+          "title": "Editing a Venue",
+          "description": "Update existing venue information",
+          "icon": "✏️",
+          "bullets": [
+            "Click 'Edit' in Action column",
+            "Update details in editable row",
+            "Click 'Update' to save or 'Cancel' to discard"
+          ]
+        },
+        {
+          "title": "Deleting Venues",
+          "description": "Remove venues from the system",
+          "icon": "🗑️",
+          "bullets": [
+            "Select venues using checkboxes",
+            "Click Action button → 'Delete Venues'",
+            "Confirm deletion in dialog"
+          ]
+        },
+        {
+          "title": "Searching Venues",
+          "description": "Use the search box to filter venues by name or details.",
+          "icon": "🔎"
+        }
+      ],
+      "notes": [
+        {
+          "type": "consideration",
+          "title": "Important Considerations",
+          "bullets": [
+            "Cannot delete venues with active bookings",
+            "Changes save immediately after Add/Update",
+            "Double-check capacity information"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "analyze",
+      "title": "Booking Analysis Help",
+      "intro": "The Booking Analyze page helps you review, search, and analyze all bookings in detail.",
+      "features": [
+        {
+          "title": "Filtering Bookings by Status",
+          "description": "Use status filter at top to view by status (All, Confirmed, Pending, Cancelled, Done).",
+          "icon": "📊"
+        },
+        {
+          "title": "Searching Bookings",
+          "description": "Use search box to find bookings by customers name, booking ID, etc.",
+          "icon": "🔍"
+        },
+        {
+          "title": "Viewing Booking Details",
+          "description": "Interact with booking records",
+          "icon": "👁️",
+          "bullets": [
+            "Click any booking row to view details",
+            "Prices automatically update when viewing",
+            "Detailed view shows all relevant information"
+          ]
+        },
+        {
+          "title": "Booking Details Modal",
+          "description": "Modal provides in-depth booking information. Close to return to list.",
+          "icon": "📋"
+        }
+      ],
+      "notes": [
+        {
+          "type": "tip",
+          "title": "Analytical Tips",
+          "bullets": [
+            "Combine filters and search for precise results",
+            "Use status filters to analyze conversion rates",
+            "Review seasonal trends by filtering date ranges"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "invoice",
+      "title": "Invoice Management Help",
+      "intro": "The Invoice View page allows you to search, filter, and view invoices for all bookings.",
+      "features": [
+        {
+          "title": "Viewing All Bookings",
+          "description": "Bookings are listed with ID, Date, Customer ID, Status, Amount, and Actions.",
+          "icon": "📋"
+        },
+        {
+          "title": "Filtering and Searching",
+          "description": "Refine the bookings list",
+          "icon": "🔍",
+          "bullets": [
+            "Click 'Filters' to show/hide search form",
+            "Filter by Booking ID or Customer ID",
+            "Click 'Apply Filters' or 'Reset'"
+          ]
+        },
+        {
+          "title": "Understanding the Table",
+          "description": "Key columns explained",
+          "icon": "📊",
+          "table": {
+            "columns": ["Column", "Description"],
+            "rows": [
+              ["Booking ID", "Unique booking identifier"],
+              ["Date", "Booking date"],
+              ["Customer ID", "Associated customers"],
+              ["Status", "Color-coded booking status"],
+              ["Amount", "Total booking amount"],
+              ["Actions", "Click 'View Invoice' for details"]
+            ]
+          }
+        },
+        {
+          "title": "Viewing and Printing Invoices",
+          "description": "Access and output invoices",
+          "icon": "🧾",
+          "bullets": [
+            "Click 'View Invoice' in Actions column",
+            "Detailed invoice will open",
+            "Print or download from detailed view"
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "type": "tip",
+          "title": "Billing Best Practices",
+          "bullets": [
+            "Review invoices within 24 hours of booking",
+            "Save PDF copies for financial records",
+            "Use search to quickly locate invoices"
+          ]
+        }
+      ]
+    }
+  ],
+  "contact": {
+    "title": "Need further assistance?",
+    "email": "support@bookingmanager.com",
+    "phone": "+1 (555) 123-4567"
+  }
+}
