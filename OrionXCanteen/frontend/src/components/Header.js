@@ -10,7 +10,7 @@ export const Header = () => {
   const [dashboard, setDashboard] = useState();
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [customerName, setCustomerName] = useState('');
+  const [customerName, setCustomerName] = useState('unknown');
   const dropdownRef = useRef(null);
   const mobileMenuRef = useRef(null);
 
@@ -33,7 +33,7 @@ export const Header = () => {
 
   const fetchCustomerName = async () => {
     const name = await getCusName(sessionStorage.getItem('id'));
-    setCustomerName(name);
+    setCustomerName(name?.customer || 'unknown');
   };
 
   const toggleUserDropdown = () => {
@@ -60,7 +60,7 @@ export const Header = () => {
     };
   }, []);
 
-  const firstCharacter = customerName.charAt(0);
+  const firstCharacter = (customerName || '').toString().charAt(0);
 
   return (
     <header className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-40">

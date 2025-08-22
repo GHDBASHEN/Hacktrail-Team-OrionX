@@ -227,6 +227,8 @@ export const getEmployeesByStatus = async (req, res) => {
 
 export const GetCustomerName = async(req,res) =>{
   const { id } = req.params;
+
+  console.log("sssssssid", id)
   try {
     const customer = await getCusName(id);
     res.status(200).json({ customer });

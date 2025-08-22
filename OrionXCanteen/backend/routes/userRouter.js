@@ -28,7 +28,7 @@ router.post('/addCustomer', addCustomer);
 router.post('/changeUserRole', superAdmin, changeUserRole);
 router.delete('/deleteEmployee',superAdmin,deleteEmployees);
 router.put('/updateStatus', updateEmployeesStatus);
-router.get('/getCusName', GetCustomerName);
+router.get('/getCusName/:id', GetCustomerName);
 
 router.get('/getActiveEmployees',getActiveEmployee);
 router.get('/getEmployeeById/:id', superAdmin,getEmployeeById); // New route to get employees by ID

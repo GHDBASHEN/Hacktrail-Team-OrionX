@@ -20,9 +20,8 @@ export const searchCustomer = async (searchTerm) => {
 export const getCusName = async (id) => {
   try {
     //const response = await api.get(`/user/getCusName/${id}`);
-    const response = await api.get(`/user/getCusName`, {
-      params: { id: id }  // <- this sends ?q=value in the URL
-    });
+    const response = await api.get(`/user/getCusName/${id}`);
+
     return response.data; // Adjust based on your API response structure
   } catch (error) {
     console.error('Error fetching customers name:', error);
