@@ -89,6 +89,7 @@ export const addEmployee = async (req, res) => {
 // add new customers
 export const addCustomer = async (req, res) => {
     const { name, contact, email, password } = req.body;
+    console.log("Adding customer:", { name, contact, email, password });
     try {
         const checkPhone = await getCustomerByPhoneModel(contact);
         if (checkPhone) return res.status(400).json({ message: 'Phone already exist...' });

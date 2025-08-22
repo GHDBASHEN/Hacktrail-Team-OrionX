@@ -69,7 +69,7 @@ export const Header = () => {
           {/* Logo/Brand */}
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-              <img src="/canteen-logo.png" className="h-8" alt="FOT Canteen Logo" />
+              <img src="/logo.png" className="h-8" alt="FOT Canteen Logo" />
               <span className="self-center text-xl font-semibold whitespace-nowrap text-blue-800">FOT Canteen</span>
             </Link>
           </div>

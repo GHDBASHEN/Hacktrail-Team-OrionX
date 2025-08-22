@@ -12,7 +12,7 @@ export const registerEmployee = async (employeeData) => {
 
 export const registerCustomer = async (customerData) => {
   console.log('Registering customers with data:', customerData);
-  const response = await api.put('/auth/register-customers', customerData);
+  const response = await api.post('/user/addCustomer', customerData);
   return response.data; // Returns success message
 };
 
