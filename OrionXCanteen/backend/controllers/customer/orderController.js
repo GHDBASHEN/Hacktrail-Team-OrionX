@@ -8,20 +8,20 @@ export const createOrder = async (req, res) => {
         // Ensure the user object and ID exist from the auth middleware
 
         const customerId = req.params.customerId;
-        
+
         const { items, specialNotes } = req.body;
         if (!items || !Array.isArray(items) || items.length === 0) {
             return res.status(400).json({ message: "Order must contain at least one item." });
         }
-        
+
         const result = await orderModel.create(customerId, items, specialNotes);
         res.status(201).json({ message: "Order placed successfully!", ...result });
 
     } catch (error) {
         // --- IMPROVED ERROR LOGGING ---
         console.error("CREATE ORDER FAILED:", error); // This will show the detailed SQL error in your terminal
-        
-        res.status(500).json({ 
+
+        res.status(500).json({
             message: "Failed to place order.",
             error: error.message // Optionally send the error message back in the response for easier debugging
         });
@@ -37,7 +37,7 @@ export const getOrderById = async (req, res) => {
         }
         // Security check: Allow access only to the order owner or an admin
         if (req.user.role !== 'admin' && order.customer_id !== req.user.id) {
-             return res.status(403).json({ message: "Access denied." });
+            return res.status(403).json({ message: "Access denied." });
         }
         res.status(200).json(order);
     } catch (error) {
