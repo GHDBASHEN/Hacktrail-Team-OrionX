@@ -22,6 +22,7 @@ import {
   addCustomerModel,
   getAllCustomersModel,
   updateCustomerModel,
+  getCusName,
 } from "../models/customerModel.js";
 
 
@@ -222,6 +223,17 @@ export const getEmployeesByStatus = async (req, res) => {
     res.status(500).json({ msg: "Server error...", error });
   }
 };
+
+
+export const GetCustomerName = async(req,res) =>{
+  const { id } = req.params;
+  try {
+    const customer = await getCusName(id);
+    res.status(200).json({ customer });
+  } catch (error) {
+    res.status(500).json({ msg: "Server error...", error });
+  }
+}
 
 //get active employees
 

@@ -8,7 +8,7 @@ export const Footer = () => {
       <footer className="bg-gray-900 text-white py-12">
         <div className="container mx-auto px-4">
           <div className="text-center">
-            <h3 className="text-2xl font-bold mb-4">Deandra Bolgoda</h3>
+            <h3 className="text-2xl font-bold mb-4">Ruhuna FOT Canteen</h3>
             <p className="text-gray-400 mb-6 max-w-2xl mx-auto">
               Premium event venue for weddings, corporate events, and special celebrations.
             </p>
@@ -28,7 +28,7 @@ export const Footer = () => {
       <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div className="sm:flex sm:items-center  sm:justify-between">
           <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
-            © {new Date().getFullYear()} Deandra Bolgoda. All rights reserved.
+            © {new Date().getFullYear()} Ruhuna FOT Canteen. All rights reserved.
           </span>
           <div className="flex mt-4 sm:justify-center sm:mt-0">
             <a href="https://www.facebook.com/Deandrabolgoda" className="text-white hover:text-gray-900 dark:hover:text-white">
@@ -55,14 +55,6 @@ export const Footer = () => {
             </a>
           </div>
         </div>
-      </div>
-      <div className="bg-slate-900 mt-6 py-2 text-center text-gray-400 text-sm">
-        <span className="block font-semibold text-white">OrionX - Project</span>
-        Created by{" "}
-        <a href="https://github.com/GHDBASHEN" target="_blank" rel="noopener noreferrer" className="hover:underline text-white">Ashen</a>,{" "}
-        <a href="https://github.com/pathuGIT" target="_blank" rel="noopener noreferrer" className="hover:underline text-white">Pathum</a>,{" "}
-        <a href="https://github.com/Dilshanjith" target="_blank" rel="noopener noreferrer" className="hover:underline text-white">Dilshanjith</a>, and{" "}
-        <a href="https://github.com/Sandali3000" target="_blank" rel="noopener noreferrer" className="hover:underline text-white">Sandali</a>
       </div>
     </footer>
 
