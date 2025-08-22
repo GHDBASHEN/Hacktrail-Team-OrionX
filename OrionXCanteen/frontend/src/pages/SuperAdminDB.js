@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import SuperAdminHome from './superAdmin/SuperAdminHome';
 import UserManagementSAN from '../components/superAdminSideNavs/UserManagementSAN';
 import EventManagementSAN from '../components/superAdminSideNavs/EventManagementSAN';
 import MenuManagementSAN from '../components/superAdminSideNavs/MenuManagementSAN';
@@ -9,7 +8,6 @@ import PayrollManagementSAN from '../components/superAdminSideNavs/PayrollManage
 import BookingManagementSAN from '../components/superAdminSideNavs/BookingManagementSAN';
 import CustomersManagementSAN from '../components/superAdminSideNavs/CustomersManagementSAN';
 import { HiMenu, HiX } from 'react-icons/hi';
-import OverView from './superAdmin/OverView';
 
 const SuperAdminDB = () => {
   const [topNav, setTopNav] = useState();
