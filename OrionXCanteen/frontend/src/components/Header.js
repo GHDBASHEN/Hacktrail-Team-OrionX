@@ -69,7 +69,7 @@ export const Header = () => {
           <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
             <div className="flex items-center">
               <Link to="/superAdmin" className="flex items-center space-x-3 rtl:space-x-reverse">
-                <img src="/canteen-logo.png" className="h-8" alt="FOT Canteen Logo" />
+                <img src="/logo.png" className="h-8" alt="FOT Canteen Logo" />
                 <span className="self-center text-xl font-semibold whitespace-nowrap text-blue-800">Admin Dashboard</span>
               </Link>
             </div>
