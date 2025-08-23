@@ -41,7 +41,62 @@ const About = () => {
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Transforming Visions into Reality
             </h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Transforming Visions into Reality
+            </h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Transforming Visions into Reality
+            </h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Transforming Visions into Reality
+            </h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Transforming Visions into Reality
+            </h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Transforming Visions into Reality
+            </h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Transforming Visions into Reality
+            </h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Transforming Visions into Reality
+            </h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Transforming Visions into Reality
+            </h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Transforming Visions into Reality
+            </h2>
             <div className="w-24 h-1 bg-purple-600 mx-auto mb-8"></div>
+            <p className="text-lg text-gray-600 mb-8">
+              At Grand Venues, we've been crafting exceptional event experiences for over a decade.
+              Our passion is helping you create celebrations that reflect your unique style and vision.
+            </p>
+            <p className="text-lg text-gray-600 mb-8">
+              At Grand Venues, we've been crafting exceptional event experiences for over a decade.
+              Our passion is helping you create celebrations that reflect your unique style and vision.
+            </p>
+            <p className="text-lg text-gray-600 mb-8">
+              At Grand Venues, we've been crafting exceptional event experiences for over a decade.
+              Our passion is helping you create celebrations that reflect your unique style and vision.
+            </p>
+            <p className="text-lg text-gray-600 mb-8">
+              At Grand Venues, we've been crafting exceptional event experiences for over a decade.
+              Our passion is helping you create celebrations that reflect your unique style and vision.
+            </p>
+            <p className="text-lg text-gray-600 mb-8">
+              At Grand Venues, we've been crafting exceptional event experiences for over a decade.
+              Our passion is helping you create celebrations that reflect your unique style and vision.
+            </p>
+            <p className="text-lg text-gray-600 mb-8">
+              At Grand Venues, we've been crafting exceptional event experiences for over a decade.
+              Our passion is helping you create celebrations that reflect your unique style and vision.
+            </p>
+            <p className="text-lg text-gray-600 mb-8">
+              At Grand Venues, we've been crafting exceptional event experiences for over a decade.
+              Our passion is helping you create celebrations that reflect your unique style and vision.
+            </p>
             <p className="text-lg text-gray-600 mb-8">
               At Grand Venues, we've been crafting exceptional event experiences for over a decade.
               Our passion is helping you create celebrations that reflect your unique style and vision.
@@ -64,6 +119,10 @@ const About = () => {
             <div className="text-center">
               <div className="text-5xl font-bold text-purple-600 mb-4">99%</div>
               <h3 className="text-xl font-semibold mb-2">Client Satisfaction</h3>
+              <p className="text-gray-600">Rated excellent by our clients</p>
+              <p className="text-gray-600">Rated excellent by our clients</p>
+              <p className="text-gray-600">Rated excellent by our clients</p>
+              <p className="text-gray-600">Rated excellent by our clients</p>
               <p className="text-gray-600">Rated excellent by our clients</p>
             </div>
           </div>
