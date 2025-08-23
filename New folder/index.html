@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            background: #d9eff7;
+            font-family: Arial, sans-serif;
+        }
+        nav {
+            background: #4741a6;
+            padding: 10px 0;
+        }
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        nav ul li {
+            margin: 0 15px;
+        }
+        nav ul li a {
+            color: #d9eff7;
+            background: transparent; /* Changed from #9bbbfc */
+            padding: 8px 18px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            transition: background 0.3s, color 0.3s, box-shadow 0.3s, border 0.3s;
+            display: inline-block;
+        }
+        nav ul li a:hover {
+            background: #9bbbfc;
+            color: #4741a6;
+            box-shadow: 0 2px 8px rgba(71,65,166,0.15);
+        }
+        nav ul li a.active {
+            background: #4741a6;
+            color: #4741a6;
+            background-color: #e8edee;
+        }
+        @media (max-width: 600px) {
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            nav ul li {
+                margin: 8px 0;
+            }
+            nav ul li a {
+                width: 120px;
+                text-align: center;
+            }
+        }
+        /* Simple fade transition for tab content */
+        .tab-content {
+            opacity: 0;
+            transition: opacity 0.4s;
+            position: absolute;
+            left: 0; right: 0;
+            top: 60px;
+            width: 100%;
+            min-height: 200px;
+            padding: 30px 0;
+            background: #d9eff7;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .tab-content.active {
+            opacity: 1;
+            position: static;
+            pointer-events: auto;
+        }
+        /* Slider styles - update these */
+        .slider-container {
+            position: relative;
+            width: 100%;
+            max-width: 100vw;
+            margin: 0 auto;
+            height: 50vw;
+            max-height: 500px;
+        }
+        .slider {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            max-height: 500px;
+            overflow: hidden;
+            border-radius: 10px;
+            background: #d9eff7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            }
+            
+        .slide {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+            transition: opacity 0.5s ease-in-out;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        .slide.active {
+            display: block;
+            opacity: 1;
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+        .slider-texts {
+            text-align: center;
+            width: 100%;
+            z-index: 2;
+        }
+        .canteen-title {
+            font-size: 50px;
+            font-weight: bold;
+            color: #F9ce69;
+            text-shadow: 2px 2px 8px #4741a6;
+            z-index: 2;
+        }
+        .faculty-title {
+            font-size: 30px;
+            color: #9bbbfc;
+            margin-top: 10px;
+        }
+        .uni-title {
+            font-size: 20px;
+            color: #d9eff7;
+            margin-top: 5px;
+        }
+        @media (max-width: 600px) {
+            .slider-container {
+                height: 250px;
+                max-height: 250px;
+            }
+            .canteen-title { font-size: 28px; }
+            .faculty-title { font-size: 18px; }
+            .uni-title { font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="#" class="active" data-tab="home">Home</a></li>
+            <li><a href="#" data-tab="menu">Food Menu</a></li>
+            <li><a href="#" data-tab="orders">Orders</a></li>
+            <li><a href="#" data-tab="login">Login</a></li>
+        </ul>
+    </nav>
+    <div class="slider-container">
+        <div class="slider-overlay"></div>
+        <div class="slider-texts">
+            <div class="canteen-title">Canteen</div>
+            <div class="faculty-title">Faculty of Technology</div>
+            <div class="uni-title">University of Ruhuna</div>
+        </div>
+        <div class="slider">
+            <img src="1.jpg" class="slide active" alt="Image 1">
+            <img src="2.jpg" class="slide" alt="Image 2">
+            <img src="3.jpg" class="slide" alt="Image 3">
+        </div>
+    </div>
+    <div id="home" class="tab-content active">
+        <h2>Welcome Home!</h2>
+        <p>This is the home tab.</p>
+    </div>
+    <div id="menu" class="tab-content">
+        <h2>Food Menu</h2>
+        <p>See our delicious menu here.</p>
+    </div>
+    <div id="orders" class="tab-content">
+        <h2>Your Orders</h2>
+        <p>Track your orders here.</p>
+    </div>
+    <div id="login" class="tab-content">
+        <h2>Login</h2>
+        <p>Please login to continue.</p>
+    </div>
+    <script>
+        // Tab switching logic
+        const links = document.querySelectorAll('nav ul li a');
+        const tabs = document.querySelectorAll('.tab-content');
+        links.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                // Remove active from all links
+                links.forEach(l => l.classList.remove('active'));
+                // Add active to clicked link
+                this.classList.add('active');
+                // Hide all tabs
+                tabs.forEach(tab => tab.classList.remove('active'));
+                // Show the clicked tab
+                const activeTab = document.getElementById(this.getAttribute('data-tab'));
+                activeTab.classList.add('active');
+            });
+        });
+
+        // Image slider logic
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                if (i === index) {
+                    slide.classList.add('active');
+                }
+            });
+        }
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+        setInterval(nextSlide, 5000); // Change slide every 5 seconds
+    </script>
+</body>
+</html>
