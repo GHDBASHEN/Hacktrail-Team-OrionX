@@ -40,8 +40,8 @@ const SuperAdminDB = () => {
 
   // Mobile navigation items
   const mobileNavItems = [
-    { id: 'A', label: 'Employees' },
-    { id: 'E', label: 'Payroll' }
+    // { id: 'A', label: 'Employees' },
+    // { id: 'E', label: 'Feedbacks' }
   ];
 
   return (
