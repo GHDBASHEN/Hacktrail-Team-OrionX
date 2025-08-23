@@ -4,10 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { getTodaysMenu } from '../../services/CustomerOrderService';
 import { createOrder } from '../../services/CustomerOrderService';
 
-const CustomerOrderPage = () => {
-    // In a real app, this would come from your AuthContext
-    const MOCK_CUSTOMER_ID = 1; 
-
+const CustomerOrderPage = ({ customerId }) => {
     const [menu, setMenu] = useState([]);
     const [cart, setCart] = useState([]);
     const [specialNotes, setSpecialNotes] = useState('');
@@ -74,7 +71,7 @@ const CustomerOrderPage = () => {
         };
 
         try {
-            const result = await createOrder(MOCK_CUSTOMER_ID, orderData);
+            const result = await createOrder(customerId, orderData);
             setMessage(`Order placed successfully! Your Order ID is ${result.orderId}`);
             setCart([]);
             setSpecialNotes('');
@@ -141,3 +138,4 @@ const CustomerOrderPage = () => {
 };
 
 export default CustomerOrderPage;
+
