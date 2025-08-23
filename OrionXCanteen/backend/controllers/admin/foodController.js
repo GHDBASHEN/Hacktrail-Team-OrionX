@@ -1,4 +1,5 @@
 import * as FoodModel from '../../models/admin/foodModel.js';
+import Food from '../../models/Food.js';
 
 export const createFood = async (req, res) => {
     try {
@@ -47,4 +48,58 @@ export const deleteFood = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Failed to delete food item." });
     }
+};
+
+
+/////////////////////////////////////////////////
+// Get today's menu
+export const getTodaysMenu = async (req, res) => {
+  try {
+    const { meal_type } = req.query;
+    const menu = await Food.getTodaysMenu(meal_type);
+    
+    res.status(200).json({
+      success: true,
+      data: menu
+    });
+  } catch (error) {
+    console.error('Error fetching today\'s menu:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch today\'s menu',
+      error: error.message
+    });
+  }
+};
+
+// Get meal availability for a date
+export const getMealAvailability = async (req, res) => {
+  try {
+    const { date } = req.query;
+    const targetDate = date || new Date().toISOString().split('T')[0];
+    
+    const mealTypes = await Food.getMealTypesByDate(targetDate);
+    
+    // Check which meal types are available
+    const availability = {
+      breakfast: mealTypes.includes('breakfast'),
+      lunch: mealTypes.includes('lunch'),
+      dinner: mealTypes.includes('dinner')
+    };
+    
+    res.status(200).json({
+      success: true,
+      data: {
+        date: targetDate,
+        availability
+      }
+    });
+  } catch (error) {
+    console.error('Error checking meal availability:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to check meal availability',
+      error: error.message
+    });
+  }
 };
