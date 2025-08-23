@@ -1,7 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
 import { getTodaysMenu, createOrder } from '../../services/CustomerOrderService';
 
-const CustomerOrderPage = () => {
+const CustomerOrderPage = ({ customerId }) => {
     const [menu, setMenu] = useState([]);
     const [cart, setCart] = useState([]);
     const [specialNotes, setSpecialNotes] = useState('');
@@ -71,7 +72,8 @@ const CustomerOrderPage = () => {
         };
 
         try {
-            const result = await createOrder(orderData);
+            // Pass the customerId prop to the createOrder service
+            const result = await createOrder(customerId, orderData);
             setMessage(`Order placed successfully! Your Order ID is ${result.orderId}`);
             setCart([]);
             setSpecialNotes('');
