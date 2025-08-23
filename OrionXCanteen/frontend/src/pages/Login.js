@@ -22,8 +22,8 @@ export const Login = () => {
                 navigate('/superAdmin');
             } else if (role === 'customer') {
                 navigate('/');
-            } 
-            
+            }
+
         } catch (error) {
             console.error('Login error:', error);
             const errorMessage = error?.response?.data?.message || 'Login failed';
@@ -57,15 +57,15 @@ export const Login = () => {
                             <div>
                                 <label for="email" className="block text-sm/6 font-medium text-gray-900 dark:text-gray-400 opacity-20">Email address</label>
                                 <div className="mt-2">
-                                    <input 
-                                        type="text" 
-                                        name="credential" 
-                                        value={user.credential} 
-                                        onChange={handleChange} 
-                                        id="email" 
-                                        autoComplete="email" 
-                                        required 
-                                        className="block w-full rounded-md border bg-white px-3 py-1.5 text-base text-gray-900 dark:text-gray-400 opacity-20 outline-1 -outline-offset-1 outline-black placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-black sm:text-sm/6" 
+                                    <input
+                                        type="text"
+                                        name="credential"
+                                        value={user.credential}
+                                        onChange={handleChange}
+                                        id="email"
+                                        autoComplete="email"
+                                        required
+                                        className="block w-full rounded-md border bg-white px-3 py-1.5 text-base text-gray-900 dark:text-gray-400 opacity-20 outline-1 -outline-offset-1 outline-black placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-black sm:text-sm/6"
                                     />
                                 </div>
                             </div>
@@ -79,15 +79,15 @@ export const Login = () => {
                                     </div>
                                 </div>
                                 <div className="mt-2">
-                                    <input 
-                                        type="password" 
-                                        name="password" 
-                                        value={user.password} 
-                                        onChange={handleChange} 
-                                        id="password" 
-                                        autoComplete="current-password" 
-                                        required 
-                                        className="block w-full rounded-md border bg-white px-3 py-1.5 text-base text-gray-900 dark:text-gray-400 opacity-20 outline-1 -outline-offset-1 outline-black placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-black sm:text-sm/6" 
+                                    <input
+                                        type="password"
+                                        name="password"
+                                        value={user.password}
+                                        onChange={handleChange}
+                                        id="password"
+                                        autoComplete="current-password"
+                                        required
+                                        className="block w-full rounded-md border bg-white px-3 py-1.5 text-base text-gray-900 dark:text-gray-400 opacity-20 outline-1 -outline-offset-1 outline-black placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-black sm:text-sm/6"
                                     />
                                 </div>
                             </div>
@@ -137,8 +137,7 @@ export const Login = () => {
                 )}
 
                 <p className="mt-10 text-center text-sm/6 text-gray-500">
-                    Not a member?
-                    <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500"> Contact our community team</a>
+                    Not a member? <Link to="/registration/register-customers" className="font-semibold text-indigo-600 hover:text-indigo-500"> Register New User</Link>
                 </p>
             </div>
         </div>
