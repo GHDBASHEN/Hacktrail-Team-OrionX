@@ -10,18 +10,9 @@ export const Footer = () => {
           <div className="text-center">
             <h3 className="text-2xl font-bold mb-4">Ruhuna FOT Canteen</h3>
             <p className="text-gray-400 mb-6 max-w-2xl mx-auto">
-              Premium event venue for weddings, corporate events, and special celebrations.
+              Serving delicious meals and refreshments to students, staff, and visitors at Ruhuna FOT Canteen.
             </p>
-            <div className="flex justify-center space-x-6 mb-8">
-              {['D', 'E', 'A', 'N', 'D', 'R', 'A'].map((social, index) => (
-                <li key={social + index} className="text-gray-400 hover:text-white transition duration-300 list-none">
-                  <span className="sr-only">{social}</span>
-                  <div className="h-8 w-8 rounded-full bg-gray-800 flex items-center justify-center">
-                    <span className="text-sm">{social.charAt(0).toUpperCase()}</span>
-                  </div>
-                </li>
-              ))}
-            </div>
+            
           </div>
         </div>
       </footer>
