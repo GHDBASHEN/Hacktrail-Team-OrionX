@@ -62,6 +62,27 @@ export const Header = () => {
 
   const firstCharacter = (customerName || '').toString().charAt(0);
 
+  if (sessionStorage.getItem('role') === 'admin') {
+    return (
+      <header className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-40">
+        <nav className="bg-white px-4 lg:px-6 py-2.5">
+          <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
+            <div className="flex items-center">
+              <Link to="/superAdmin" className="flex items-center space-x-3 rtl:space-x-reverse">
+                <img src="/canteen-logo.png" className="h-8" alt="FOT Canteen Logo" />
+                <span className="self-center text-xl font-semibold whitespace-nowrap text-blue-800">Admin Dashboard</span>
+              </Link>
+            </div>
+            <div className="flex items-center lg:order-2">
+              <Link to="/superAdmin" className="text-blue-800 hover:bg-blue-50 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 lg:px-5 lg:py-2.5 mr-2 focus:outline-none">Dashboard Home</Link>
+              <Link to="#" className="text-blue-800 hover:bg-blue-50 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 lg:px-5 lg:py-2.5 mr-2 focus:outline-none"><Logout /></Link>
+            </div>
+          </div>
+        </nav>
+      </header>
+    );
+  }
+
   return (
     <header className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-40">
       <nav className="bg-white px-4 lg:px-6 py-2.5">
@@ -239,6 +260,8 @@ export const Header = () => {
       </nav>
     </header>
   );
+
+  
 };
 
 // import { useContext, React, useState, useEffect, useRef } from 'react';
@@ -305,27 +328,8 @@ export const Header = () => {
 
 //   const firstCharacter = (customerName || '').toString().charAt(0);
 
-//   // Render admin dashboard navbar if role is admin
-//   if (role === 'admin') {
-//     return (
-//       <header className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-40">
-//         <nav className="bg-white px-4 lg:px-6 py-2.5">
-//           <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
-//             <div className="flex items-center">
-//               <Link to="/superAdmin" className="flex items-center space-x-3 rtl:space-x-reverse">
-//                 <img src="/canteen-logo.png" className="h-8" alt="FOT Canteen Logo" />
-//                 <span className="self-center text-xl font-semibold whitespace-nowrap text-blue-800">Admin Dashboard</span>
-//               </Link>
-//             </div>
-//             <div className="flex items-center lg:order-2">
-//               <Link to="/superAdmin" className="text-blue-800 hover:bg-blue-50 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 lg:px-5 lg:py-2.5 mr-2 focus:outline-none">Dashboard Home</Link>
-//               <Link to="#" className="text-blue-800 hover:bg-blue-50 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 lg:px-5 lg:py-2.5 mr-2 focus:outline-none"><Logout /></Link>
-//             </div>
-//           </div>
-//         </nav>
-//       </header>
-//     );
-//   }
+  // Render admin dashboard navbar if role is admin
+  
 
 //   // Default navigation bar for non-admins
 //   return (
