@@ -1,10 +1,7 @@
-// frontend/src/pages/customer/CustomerOrderPage.js
-
 import React, { useState, useEffect } from 'react';
-import { getTodaysMenu } from '../../services/CustomerOrderService';
-import { createOrder } from '../../services/CustomerOrderService';
+import { getTodaysMenu, createOrder } from '../../services/CustomerOrderService';
 
-const CustomerOrderPage = ({ customerId }) => {
+const CustomerOrderPage = () => {
     const [menu, setMenu] = useState([]);
     const [cart, setCart] = useState([]);
     const [specialNotes, setSpecialNotes] = useState('');
@@ -19,6 +16,9 @@ const CustomerOrderPage = ({ customerId }) => {
     const fetchMenu = async () => {
         try {
             const menuData = await getTodaysMenu();
+            if (menuData.length === 0) {
+                setMessage("No menu items available for today.");
+            }
             setMenu(menuData);
         } catch (err) {
             setError('Could not load today\'s menu. Please try again later.');
@@ -71,7 +71,7 @@ const CustomerOrderPage = ({ customerId }) => {
         };
 
         try {
-            const result = await createOrder(customerId, orderData);
+            const result = await createOrder(orderData);
             setMessage(`Order placed successfully! Your Order ID is ${result.orderId}`);
             setCart([]);
             setSpecialNotes('');
@@ -87,17 +87,19 @@ const CustomerOrderPage = ({ customerId }) => {
             <div>
                 <h1>Today's Menu</h1>
                 {error && <p style={{ color: 'red' }}>{error}</p>}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '20px' }}>
-                    {menu.map(item => (
-                        <div key={item.food_id} style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '15px' }}>
-                            <img src={item.image_url || '[https://placehold.co/600x400](https://placehold.co/600x400)'} alt={item.food_name} style={{ width: '100%', height: '150px', objectFit: 'cover' }} />
-                            <h3>{item.food_name}</h3>
-                            <p style={{ fontSize: '0.9rem', color: '#555' }}>{item.components}</p>
-                            <p style={{ fontWeight: 'bold' }}>LKR {item.price}</p>
-                            <button onClick={() => addToCart(item)}>Add to Cart</button>
-                        </div>
-                    ))}
-                </div>
+                {menu.length > 0 ? (
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '20px' }}>
+                        {menu.map(item => (
+                            <div key={item.food_id} style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '15px' }}>
+                                <img src={item.image_url || 'https://placehold.co/600x400'} alt={item.food_name} style={{ width: '100%', height: '150px', objectFit: 'cover' }} />
+                                <h3>{item.food_name}</h3>
+                                <p style={{ fontSize: '0.9rem', color: '#555' }}>{item.components}</p>
+                                <p style={{ fontWeight: 'bold' }}>LKR {item.price}</p>
+                                <button onClick={() => addToCart(item)}>Add to Cart</button>
+                            </div>
+                        ))}
+                    </div>
+                ) : !error && <p>{message || "No menu items available for today."}</p>}
             </div>
 
             <div style={{ borderLeft: '1px solid #ccc', paddingLeft: '40px' }}>
@@ -129,7 +131,7 @@ const CustomerOrderPage = ({ customerId }) => {
                         <button onClick={handlePlaceOrder} style={{ width: '100%', padding: '10px', marginTop: '10px', background: 'green', color: 'white' }}>
                             Place Order
                         </button>
-                        {message && <p style={{ color: 'green' }}>{message}</p>}
+                        {message && cart.length === 0 && <p style={{ color: 'green' }}>{message}</p>}
                     </>
                 )}
             </div>
@@ -138,4 +140,3 @@ const CustomerOrderPage = ({ customerId }) => {
 };
 
 export default CustomerOrderPage;
-

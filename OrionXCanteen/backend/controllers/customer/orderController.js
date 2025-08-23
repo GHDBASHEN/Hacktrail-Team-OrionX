@@ -1,30 +1,33 @@
 // controllers/order.controller.js
 
 import * as orderModel from '../../models/customer/orderModel.js';
-
+import { v4 as uuidv4 } from 'uuid';
 // CREATE: Handles creation of a new order
 export const createOrder = async (req, res) => {
     try {
-        // Ensure the user object and ID exist from the auth middleware
-
-        const customerId = req.params.customerId;
-
+        // Get customerId from the authenticated user's token instead of the request body
+        const customerId = req.user.id;
         const { items, specialNotes } = req.body;
-        if (!items || !Array.isArray(items) || items.length === 0) {
-            return res.status(400).json({ message: "Order must contain at least one item." });
+        const token = uuidv4();
+
+        if (!items || items.length === 0) {
+            return res.status(400).json({ message: 'Order must contain at least one item.' });
         }
 
-        const result = await orderModel.create(customerId, items, specialNotes);
-        res.status(201).json({ message: "Order placed successfully!", ...result });
+        const totalPrice = await Order.calculateTotalPrice(items);
 
-    } catch (error) {
-        // --- IMPROVED ERROR LOGGING ---
-        console.error("CREATE ORDER FAILED:", error); // This will show the detailed SQL error in your terminal
-
-        res.status(500).json({
-            message: "Failed to place order.",
-            error: error.message // Optionally send the error message back in the response for easier debugging
+        const orderResult = await Order.create({
+            customerId,
+            items,
+            totalPrice,
+            token,
+            specialNotes
         });
+
+        res.status(201).json({ message: 'Order placed successfully', orderId: orderResult.orderId, token });
+    } catch (error) {
+        console.error('CREATE ORDER FAILED:', error);
+        res.status(500).json({ message: 'Failed to create order' });
     }
 };
 
