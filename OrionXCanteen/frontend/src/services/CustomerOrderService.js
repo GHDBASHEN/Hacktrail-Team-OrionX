@@ -5,13 +5,12 @@ export const getTodaysMenu = async () => {
     return response.data;
 };
 
-
+// The customerId parameter is no longer needed here
 export const createOrder = async (customerId, orderData) => {
-    // Using the route structure: POST /api/orders/:customerId
-    const response = await api.post(`/orders/${customerId}`, orderData);
+    // 2. Use a template literal to include the customerId in the URL
+    const response = await api.post(`/orders/create/${customerId}`, orderData);
     return response.data;
 };
-
 
 export const getMyOrders = async (customerId) => {
     const response = await api.get(`/orders/my-orders/${customerId}`);

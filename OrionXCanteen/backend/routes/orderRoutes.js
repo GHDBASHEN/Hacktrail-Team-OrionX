@@ -7,7 +7,7 @@ const router = express.Router();
 
 // --- Student Routes ---
 // POST /api/orders -> Create a new order
-router.post('/:customerId', createOrder);
+router.post('/create/:customerId',  createOrder);
 
 // GET /api/orders/my-orders -> Get the logged-in student's order history
 router.get('/my-orders/:customerId',getMyOrders);
