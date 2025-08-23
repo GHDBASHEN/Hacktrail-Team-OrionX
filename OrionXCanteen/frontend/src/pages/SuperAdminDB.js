@@ -7,6 +7,7 @@ import { HiMenu, HiX } from 'react-icons/hi';
 import OverView from './superAdmin/OverView';
 import CreateCategory from '../pages/Admin/CreateCategory.js';
 import FoodManagement from '../pages/Admin/FoodManagement.js';
+import CategoryManagement from '../pages/Admin/CreateCategory.js';
 
 const SuperAdminDB = () => {
   const [topNav, setTopNav] = useState();
@@ -129,20 +130,7 @@ const SuperAdminDB = () => {
         {/* Render navigation based on topNav state */}
         {renderNavs()}
         {/* Create Category Button under Overview */}
-        <button
-          type="button"
-          className="m-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-          onClick={() => setRenderContent(() => () => <CreateCategory />)}
-        >
-          Create Category
-        </button>
-        <button
-          type="button"
-          className="m-4 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
-          onClick={() => setRenderContent(() => () => <FoodManagement />)}
-        >
-          Food Management
-        </button>
+        
       </div>
 
       {/* Main Content Area */}

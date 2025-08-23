@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Logout } from '../../components/Logout';
 import OverView from '../../pages/superAdmin/OverView';
 import { HiOutlineViewGrid, HiOutlineCog, HiOutlineLogout } from 'react-icons/hi';
+import FoodManagement from '../../pages/Admin/FoodManagement';
+import CategoryManagement from '../../pages/Admin/CreateCategory';
 
 const DefaultSAN = ({ setRenderContent, closeMobileMenu }) => {
   const [clickedItem, setClickedItem] = useState('overview');
@@ -12,6 +14,13 @@ const DefaultSAN = ({ setRenderContent, closeMobileMenu }) => {
         setClickedItem('overview');
         setRenderContent(() => () => <OverView />);
         break;
+      case 'foodManagement':
+        setClickedItem('foodManagement');
+        setRenderContent(() => () => <FoodManagement />);
+        break;
+      case 'categoryManagement':
+        setClickedItem('categoryManagement');
+        setRenderContent(() => () => <CategoryManagement />);
         break;
       default:
         setRenderContent(() => () => <OverView />);
@@ -37,13 +46,24 @@ const DefaultSAN = ({ setRenderContent, closeMobileMenu }) => {
         </li>
         <li>
           <button 
-            onClick={() => handleRenderContent('setting')}
+            onClick={() => handleRenderContent('foodManagement')}
             className={`flex items-center w-full p-3 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100 group ${
               clickedItem === 'setting' ? 'bg-gray-100' : ''
             }`}
           >
             <HiOutlineCog className="w-6 h-6 text-gray-500 group-hover:text-gray-900" />
-            <span className="ml-3">Setting</span>
+            <span className="ml-3">Food Management</span>
+          </button>
+        </li>
+        <li>
+          <button
+            onClick={() => handleRenderContent('categoryManagement')}
+            className={`flex items-center w-full p-3 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100 group ${
+              clickedItem === 'categoryManagement' ? 'bg-gray-100' : ''
+            }`}
+          >
+            <HiOutlineCog className="w-6 h-6 text-gray-500 group-hover:text-gray-900" />
+            <span className="ml-3">Category Management</span>
           </button>
         </li>
         <li>
