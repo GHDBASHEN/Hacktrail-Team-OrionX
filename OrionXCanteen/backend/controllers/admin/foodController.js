@@ -5,6 +5,7 @@ export const createFood = async (req, res) => {
     try {
         // Basic validation
         const { food_name, price, meal_type } = req.body;
+        console.log(req.body);
         if (!food_name || !price || !meal_type) {
             return res.status(400).json({ message: "Food name, price, and meal type are required." });
         }

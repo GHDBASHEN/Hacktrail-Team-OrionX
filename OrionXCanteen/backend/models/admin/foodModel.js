@@ -2,6 +2,7 @@ import db from '../../config/db.js';
 
 export const create = async (food) => {
     const { food_name, category_id, price, meal_type, is_available, image_url } = food;
+    console.log("slsls", food_name, category_id, price, meal_type, is_available, image_url)
     // The trigger will auto-generate the food_id
     const [result] = await db.execute(
         'INSERT INTO foods (food_name, category_id, price, meal_type, is_available, image_url) VALUES (?, ?, ?, ?, ?, ?)',
