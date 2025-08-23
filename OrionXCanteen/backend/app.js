@@ -8,6 +8,7 @@ import mailRouter from './routes/mailRouter.js';
 import orderRoutes from './routes/orderRoutes.js'; // Uncomment when order routes are implemented
 import foodRoutes from './routes/foodRoutes.js'; // Dynamic import for food routes
 import categoryRoute from './routes/categoryRoute.js'; // Dynamic import for category routes
+import menuRoutes from './routes/menuRoutes.js';
 
 
 
@@ -28,6 +29,7 @@ app.use('/api/mail', mailRouter);
 app.use('/api/orders',orderRoutes); // Uncomment when order routes are implemented
 app.use('/api/foods', foodRoutes); // Dynamic import for food routes
 app.use('/api/categories', categoryRoute); // Dynamic import for category routes
+app.use('/api/menu', menuRoutes)
 
 // Global error handler
 app.use((err, req, res, next) => {
