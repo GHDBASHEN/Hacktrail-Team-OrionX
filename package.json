@@ -1,0 +1,22 @@
+{
+  "name": "hacktrail-team-orionx",
+  "version": "1.0.0",
+  "description": "Creating a Solution for Problem in Hackerthon",
+  "dev": "vite",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GHDBASHEN/Hacktrail-Team-OrionX.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/GHDBASHEN/Hacktrail-Team-OrionX/issues"
+  },
+  "homepage": "https://github.com/GHDBASHEN/Hacktrail-Team-OrionX#readme"
+}
