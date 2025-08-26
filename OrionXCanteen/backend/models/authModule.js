@@ -20,7 +20,7 @@ export const saveSystemuserRefreshTokenModel = async (token, userId) => {
 export const saveCustomerRefreshTokenModel = async (token, customer_id) => {
     const conn = await pool.getConnection();
     try {
-        await conn.query('UPDATE customers SET refresh_token = ? WHERE id = ?', [token, customer_id]);
+        await conn.query('UPDATE customers SET refresh_token = ? WHERE cus_id = ?', [token, customer_id]);
     } finally {
         conn.release(); // ✅ Always release the connection
     }
@@ -50,7 +50,7 @@ export const isRefreshTokenValidModel = async (userId, password, token) => {
 
     // then check customers
     const [custRows] = await pool.query(
-        'SELECT refresh_token, password FROM customers WHERE id = ?',
+        'SELECT refresh_token, password FROM customers WHERE cus_id = ?',
         [userId]
     );
     if (custRows.length > 0) {

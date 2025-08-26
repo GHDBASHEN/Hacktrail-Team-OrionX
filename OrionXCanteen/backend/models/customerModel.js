@@ -20,7 +20,7 @@ export const getCustomerByPhoneModel = async (contact) => {
 // Get customers by email or phone
 export const getCustomerByEmailORPswdModel = async (credential) => {
   const [result] = await pool.query(
-    'SELECT id, password, email, user_role, contact, refresh_token FROM customers WHERE email = ? OR contact = ?',
+    'SELECT cus_id, password, email, user_role, contact, refresh_token FROM customers WHERE email = ? OR contact = ?',
     [credential, credential]
   );
 
@@ -31,7 +31,7 @@ export const getCustomerByEmailORPswdModel = async (credential) => {
 
 export const getCustomersByCusIdModel = async (empId) => {
   const [result] = await pool.query(
-    'select * from customers where pasword IS NOT NULL and customer_id = ?',
+    'select * from customers where pasword IS NOT NULL and cus_id = ?',
     [empId]
   );
   return result[0];
@@ -61,7 +61,7 @@ export const addCustomerModel = async (name, email, contact, password) => {
 export const registerCustomerModel = async (password, customer_id) => {
   console.log("model", password, customer_id)
   const [result] = await pool.query(
-    'UPDATE customers SET pasword = ?, staus = ? WHERE customer_id = ?',
+    'UPDATE customers SET pasword = ?, staus = ? WHERE cus_id = ?',
     [password, 'active', customer_id]
   );
   return result[0];
@@ -70,7 +70,7 @@ export const registerCustomerModel = async (password, customer_id) => {
 export const getCusName = async (id) => {
   console.log("sssss", id)
   const [result] = await pool.query(
-    `SELECT name FROM customers WHERE id = ?`,
+    `SELECT name FROM customers WHERE cus_id = ?`,
     [id]
   );
   console.log("sssss", result[0].name)
@@ -80,7 +80,7 @@ export const getCusName = async (id) => {
 // Add to models/customerModel.js
 export const getAllCustomersModel = async () => {
   const [rows] = await pool.query(
-    `SELECT customer_id, name, email, phone, address, created_at, staus 
+    `SELECT cus_id, name, email, phone, address, created_at, staus 
      FROM customers 
      WHERE role = 'customers'`
   );
@@ -98,7 +98,7 @@ export const updateCustomerModel = async (customerId, updateData) => {
   await pool.query(
     `UPDATE customers 
      SET name = ?, email = ?, phone = ?, address = ?, staus = ?
-     WHERE customer_id = ?`,
+     WHERE cus_id = ?`,
     [name, email, phone, address || '', staus || 'active', customerId]
   );
 
