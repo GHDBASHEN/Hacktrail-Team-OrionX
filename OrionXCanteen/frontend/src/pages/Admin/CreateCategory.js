@@ -1,4 +1,3 @@
-// frontend/src/pages/admin/CategoryManagement.js
 import React, { useState, useEffect } from 'react';
 import { createCategory, getAllCategories, updateCategory, deleteCategory } from '../../services/AdminServices';
 
@@ -44,19 +43,20 @@ const CategoryManagement = () => {
         } catch (err) {
             setError(err.response?.data?.message || 'Failed to create category.');
             setMessage('');
-            setIsLoading(false);
+        } finally {
+            // Let fetchCategories handle the final isLoading state
         }
     };
 
     const handleUpdate = async (e) => {
         e.preventDefault();
-        if (!editingCategory || !editingCategory.category_name.trim()) {
+        if (!editingCategory || !editingCategory.c_name.trim()) {
             setError('Category name cannot be empty.');
             return;
         }
         try {
             setIsLoading(true);
-            await updateCategory(editingCategory.category_id, editingCategory.category_name);
+            await updateCategory(editingCategory.c_id, editingCategory.c_name);
             setEditingCategory(null);
             setMessage('Category updated successfully!');
             setError('');
@@ -152,22 +152,7 @@ const CategoryManagement = () => {
                             disabled={isLoading}
                             className="inline-flex items-center px-4 py-3 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-75"
                         >
-                            {isLoading ? (
-                                <>
-                                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                    </svg>
-                                    Adding...
-                                </>
-                            ) : (
-                                <>
-                                    <svg className="-ml-1 mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                    </svg>
-                                    Add Category
-                                </>
-                            )}
+                            {isLoading ? 'Processing...' : 'Add Category'}
                         </button>
                     </form>
                 </div>
@@ -178,15 +163,15 @@ const CategoryManagement = () => {
                         <h2 className="text-lg font-medium text-gray-900">Existing Categories</h2>
                         <p className="mt-1 text-sm text-gray-600">A list of all product categories in the system</p>
                     </div>
-                    
-                    {isLoading ? (
+
+                    {isLoading && categories.length === 0 ? (
                         <div className="py-12 flex justify-center">
                             <svg className="animate-spin h-8 w-8 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                             </svg>
                         </div>
-                    ) : categories.length === 0 ? (
+                    ) : !isLoading && categories.length === 0 ? (
                         <div className="py-12 text-center">
                             <svg className="mx-auto h-12 w-12 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -206,23 +191,23 @@ const CategoryManagement = () => {
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
                                     {categories.map((cat) => (
-                                        <tr key={cat.category_id} className="hover:bg-gray-50 transition-colors duration-150">
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{cat.category_id}</td>
+                                        <tr key={cat.c_id} className="hover:bg-gray-50 transition-colors duration-150">
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{cat.c_id}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                {editingCategory && editingCategory.category_id === cat.category_id ? (
+                                                {editingCategory && editingCategory.c_id === cat.c_id ? (
                                                     <input
                                                         type="text"
-                                                        value={editingCategory.category_name}
-                                                        onChange={(e) => setEditingCategory({ ...editingCategory, category_name: e.target.value })}
+                                                        value={editingCategory.c_name}
+                                                        onChange={(e) => setEditingCategory({ ...editingCategory, c_name: e.target.value })}
                                                         className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                                                         autoFocus
                                                     />
                                                 ) : (
-                                                    cat.category_name
+                                                    cat.c_name
                                                 )}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                {editingCategory && editingCategory.category_id === cat.category_id ? (
+                                                {editingCategory && editingCategory.c_id === cat.c_id ? (
                                                     <div className="flex justify-end space-x-2">
                                                         <button
                                                             onClick={handleUpdate}
@@ -249,7 +234,7 @@ const CategoryManagement = () => {
                                                             Edit
                                                         </button>
                                                         <button
-                                                            onClick={() => handleDelete(cat.category_id)}
+                                                            onClick={() => handleDelete(cat.c_id)}
                                                             disabled={isLoading}
                                                             className="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-md text-sm font-medium transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-75"
                                                         >
