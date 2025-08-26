@@ -1,8 +1,8 @@
 
 import React, { useContext } from 'react'
-// import CustomerOrderPage from '../pages/Customer/CustomerOrderPage'
+import CustomerOrderPage from '../pages/Customer/CustomerOrderPage'
 import { AuthContext } from '../context/Authcontext' // adjust path as needed
-import CustomerOrder from './customer/CustomerOr';
+// import CustomerOrder from './customer/CustomerOr';
 
 const Profile = () => {
   const { user } = useContext(AuthContext);
@@ -10,8 +10,8 @@ const Profile = () => {
 
   return (
     <div className='w-full h-full '>
-      {/* <CustomerOrderPage customerId={customerId} /> */}
-      <CustomerOrder customerId={customerId} />
+      <CustomerOrderPage customerId={customerId} />
+      {/* <CustomerOrder customerId={customerId} /> */}
     </div>
   )
 }
