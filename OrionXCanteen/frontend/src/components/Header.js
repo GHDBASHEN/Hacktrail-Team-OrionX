@@ -1,4 +1,4 @@
-
+// Header.js
 import { useContext, React, useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/Authcontext';
@@ -136,9 +136,16 @@ export const Header = () => {
                       <Link
                         to='/profile'
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      //onClick={() => setIsUserDropdownOpen(false)}
                       >
                         Profile
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to={dashboard}
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        Dashboard
                       </Link>
                     </li>
                     <li>
@@ -202,7 +209,16 @@ export const Header = () => {
                   className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  Menu
+                  Weekly Menu
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/order"
+                  className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0 font-semibold text-blue-600"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Order Now
                 </Link>
               </li>
               {user && (
@@ -233,6 +249,4 @@ export const Header = () => {
       </nav>
     </header>
   );
-
-
 };
