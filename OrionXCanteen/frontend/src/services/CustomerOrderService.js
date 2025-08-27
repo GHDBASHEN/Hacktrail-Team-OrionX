@@ -1,24 +1,14 @@
 import api from './Api';
 
+// Fetches today's menu (both daily and standard items)
 export const getTodaysMenu = async () => {
-    const response = await api.get('/menu/today');
+    const response = await api.get('/customer/menu');
     return response.data;
 };
 
-// The customerId parameter is no longer needed here
-export const createOrder = async (customerId, orderData) => {
-    // 2. Use a template literal to include the customerId in the URL
-    const response = await api.post(`/orders/create/${customerId}`, orderData);
-    return response.data;
-};
-
-export const getMyOrders = async (customerId) => {
-    const response = await api.get(`/orders/my-orders/${customerId}`);
-    return response.data;
-};
-
-
-export const cancelMyOrder = async (orderId) => {
-    const response = await api.patch(`/orders/${orderId}/cancel`);
+// Places a new order
+export const placeOrder = async (orderData) => {
+    // orderData should look like: { customerId: '...', cartItems: [...] }
+    const response = await api.post('/customer/orders', orderData);
     return response.data;
 };
