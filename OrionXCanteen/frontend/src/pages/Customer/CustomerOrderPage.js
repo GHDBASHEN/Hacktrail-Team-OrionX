@@ -1,141 +1,194 @@
+import React, { useState, useEffect, useMemo, useContext } from 'react';
+import { getTodaysMenu, placeOrder } from '../../services/CustomerServise';
+import { AuthContext } from '../../context/Authcontext'; // 1. Import AuthContext
+import { FaShoppingCart, FaTrash } from 'react-icons/fa';
 
-import React, { useState, useEffect } from 'react';
-import { getTodaysMenu, createOrder } from '../../services/CustomerOrderService';
-
-const CustomerOrderPage = ({ customerId }) => {
-    const [menu, setMenu] = useState([]);
+const CustomerOrderPage = () => {
+    const { user } = useContext(AuthContext); // 2. Get user from context
+    const [menu, setMenu] = useState({ dailyFoods: [], standardFoods: [] });
     const [cart, setCart] = useState([]);
-    const [specialNotes, setSpecialNotes] = useState('');
+    const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
-    const [message, setMessage] = useState('');
-    const [loading, setLoading] = useState(true);
+    const [orderSuccess, setOrderSuccess] = useState(null); // To store { orderId, totalAmount }
 
     useEffect(() => {
         fetchMenu();
     }, []);
 
     const fetchMenu = async () => {
+        setIsLoading(true);
         try {
-            const menuData = await getTodaysMenu();
-            if (menuData.length === 0) {
-                setMessage("No menu items available for today.");
-            }
-            setMenu(menuData);
+            const data = await getTodaysMenu();
+            setMenu(data);
         } catch (err) {
-            setError('Could not load today\'s menu. Please try again later.');
+            setError('Could not load the menu. Please try again later.');
         } finally {
-            setLoading(false);
+            setIsLoading(false);
         }
     };
 
-    const addToCart = (foodItem) => {
+    const addToCart = (item) => {
         setCart(prevCart => {
-            const existingItem = prevCart.find(item => item.food_id === foodItem.food_id);
+            const existingItem = prevCart.find(cartItem => (cartItem.d_id && cartItem.d_id === item.d_id) || (cartItem.f_id && cartItem.f_id === item.f_id));
             if (existingItem) {
-                return prevCart.map(item =>
-                    item.food_id === foodItem.food_id
-                        ? { ...item, quantity: item.quantity + 1 }
-                        : item
+                return prevCart.map(cartItem =>
+                    ((cartItem.d_id && cartItem.d_id === item.d_id) || (cartItem.f_id && cartItem.f_id === item.f_id))
+                        ? { ...cartItem, quantity: cartItem.quantity + 1 }
+                        : cartItem
                 );
             }
-            return [...prevCart, { ...foodItem, quantity: 1 }];
+            return [...prevCart, { ...item, quantity: 1 }];
         });
     };
 
-    const updateQuantity = (foodId, amount) => {
-        setCart(prevCart => {
-            const updatedCart = prevCart.map(item => {
-                if (item.food_id === foodId) {
-                    return { ...item, quantity: Math.max(0, item.quantity + amount) };
-                }
-                return item;
-            });
-            return updatedCart.filter(item => item.quantity > 0);
-        });
+    const removeFromCart = (itemId, itemType) => {
+        setCart(prevCart => prevCart.filter(item => !(item[itemType] === itemId)));
     };
 
-    const getTotalPrice = () => {
-        return cart.reduce((total, item) => total + parseFloat(item.price) * item.quantity, 0).toFixed(2);
+    const updateQuantity = (itemId, itemType, newQuantity) => {
+        if (newQuantity < 1) {
+            removeFromCart(itemId, itemType);
+            return;
+        }
+        setCart(prevCart => prevCart.map(item =>
+            item[itemType] === itemId ? { ...item, quantity: newQuantity } : item
+        ));
     };
 
     const handlePlaceOrder = async () => {
-        if (cart.length === 0) {
-            setError("Your cart is empty.");
-            return;
-        }
+        setIsLoading(true);
         setError('');
-        setMessage('');
-
-        const orderData = {
-            items: cart.map(({ food_id, quantity }) => ({ food_id, quantity })),
-            specialNotes: specialNotes,
-        };
-
         try {
-            // Pass the customerId prop to the createOrder service
-            const result = await createOrder(customerId, orderData);
-            setMessage(`Order placed successfully! Your Order ID is ${result.orderId}`);
-            setCart([]);
-            setSpecialNotes('');
+            // 3. Get customer ID from session storage, ensuring the user is logged in
+            const customerId = sessionStorage.getItem('id'); 
+            if (!customerId) {
+                setError("You must be logged in to place an order.");
+                setIsLoading(false);
+                return;
+            }
+            
+            const orderData = { customerId, cartItems: cart };
+            const result = await placeOrder(orderData);
+            setOrderSuccess({ orderId: result.orderId, totalAmount: result.totalAmount });
+            setCart([]); // Clear cart on success
         } catch (err) {
-            setError(err.response?.data?.message || 'Failed to place order.');
+            setError(err.response?.data?.message || 'There was an issue placing your order.');
+        } finally {
+            setIsLoading(false);
         }
     };
 
-    if (loading) return <p>Loading menu...</p>;
+    const cartTotal = useMemo(() => {
+        return cart.reduce((total, item) => {
+            const price = item.meal_price || item.price;
+            return total + (price * item.quantity);
+        }, 0);
+    }, [cart]);
+
+    if (isLoading && !menu.dailyFoods.length) {
+        return <div className="text-center p-10">Loading Menu...</div>;
+    }
+    
+    if (orderSuccess) {
+        return (
+            <div className="container mx-auto max-w-2xl text-center p-8 bg-white shadow-lg rounded-lg my-10">
+                <h1 className="text-3xl font-bold text-green-600 mb-4">Order Placed Successfully!</h1>
+                <p className="text-gray-700 mb-2">Thank you for your order.</p>
+                <p className="text-gray-700 mb-6">Please use the token below to collect your meal.</p>
+                <div className="bg-gray-100 p-4 rounded-lg inline-block">
+                    <p className="text-lg font-semibold text-gray-800">Your Order Token:</p>
+                    <p className="text-4xl font-bold text-blue-600 tracking-wider">{orderSuccess.orderId}</p>
+                </div>
+                <p className="text-gray-600 mt-6 font-semibold">Total Amount: Rs. {orderSuccess.totalAmount.toFixed(2)}</p>
+                <button onClick={() => setOrderSuccess(null)} className="mt-8 bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600">
+                    Place Another Order
+                </button>
+            </div>
+        );
+    }
 
     return (
-        <div style={{ fontFamily: 'Arial, sans-serif', display: 'grid', gridTemplateColumns: '3fr 1fr', gap: '40px', maxWidth: '1400px', margin: 'auto' }}>
-            <div>
-                <h1>Today's Menu</h1>
-                {error && <p style={{ color: 'red' }}>{error}</p>}
-                {menu.length > 0 ? (
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '20px' }}>
-                        {menu.map(item => (
-                            <div key={item.food_id} style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '15px' }}>
-                                <img src={item.image_url || 'https://placehold.co/600x400'} alt={item.food_name} style={{ width: '100%', height: '150px', objectFit: 'cover' }} />
-                                <h3>{item.food_name}</h3>
-                                <p style={{ fontSize: '0.9rem', color: '#555' }}>{item.components}</p>
-                                <p style={{ fontWeight: 'bold' }}>LKR {item.price}</p>
-                                <button onClick={() => addToCart(item)}>Add to Cart</button>
+        <div className="container mx-auto p-4 grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Menu Section */}
+            <div className="lg:col-span-2">
+                <h1 className="text-3xl font-bold mb-6">Today's Menu</h1>
+                {error && <p className="text-red-500 bg-red-100 p-3 rounded-md">{error}</p>}
+                
+                {/* Daily Foods */}
+                <h2 className="text-2xl font-semibold mb-4 border-b pb-2">Daily Meal Packages</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {menu.dailyFoods.map(item => (
+                        <div key={item.d_id} className="bg-white p-4 rounded-lg shadow-md flex flex-col justify-between">
+                            <div>
+                                <h3 className="font-bold text-lg">{item.d_name}</h3>
+                                <p className="text-sm text-gray-500 capitalize">{item.meal_type}</p>
+                                <p className="font-semibold text-gray-800 mt-2">Rs. {parseFloat(item.meal_price).toFixed(2)}</p>
                             </div>
-                        ))}
-                    </div>
-                ) : !error && <p>{message || "No menu items available for today."}</p>}
+                            <button onClick={() => addToCart(item)} className="mt-4 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 w-full">
+                                Add to Cart
+                            </button>
+                        </div>
+                    ))}
+                </div>
+
+                {/* Standard Foods */}
+                <h2 className="text-2xl font-semibold my-4 border-b pb-2 mt-8">Individual Items</h2>
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {menu.standardFoods.map(item => (
+                        <div key={item.f_id} className="bg-white p-4 rounded-lg shadow-md flex flex-col justify-between">
+                           <div>
+                                <h3 className="font-bold text-lg">{item.f_name}</h3>
+                                <p className="font-semibold text-gray-800 mt-2">Rs. {parseFloat(item.price).toFixed(2)}</p>
+                            </div>
+                           <button onClick={() => addToCart(item)} className="mt-4 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 w-full">
+                                Add to Cart
+                            </button>
+                        </div>
+                    ))}
+                </div>
             </div>
 
-            <div style={{ borderLeft: '1px solid #ccc', paddingLeft: '40px' }}>
-                <h2>Your Order</h2>
-                {cart.length === 0 ? (
-                    <p>Your cart is empty.</p>
-                ) : (
-                    <>
-                        {cart.map(item => (
-                            <div key={item.food_id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '10px 0' }}>
-                                <div>
-                                    <p style={{ margin: 0 }}>{item.food_name}</p>
-                                    <small>x {item.quantity}</small>
-                                </div>
-                                <div>
-                                    <button onClick={() => updateQuantity(item.food_id, -1)}>-</button>
-                                    <button onClick={() => updateQuantity(item.food_id, 1)}>+</button>
-                                </div>
+            {/* Cart Section */}
+            <div className="lg:col-span-1">
+                <div className="bg-white p-6 rounded-lg shadow-lg sticky top-8">
+                    <h2 className="text-2xl font-bold mb-4 flex items-center"><FaShoppingCart className="mr-3"/> Your Cart</h2>
+                    {cart.length === 0 ? (
+                        <p className="text-gray-500">Your cart is empty.</p>
+                    ) : (
+                        <>
+                            <div className="space-y-4">
+                                {cart.map(item => (
+                                    <div key={item.d_id || item.f_id} className="flex justify-between items-center">
+                                        <div>
+                                            <p className="font-semibold">{item.d_name || item.f_name}</p>
+                                            <p className="text-sm text-gray-600">Rs. {parseFloat(item.meal_price || item.price).toFixed(2)}</p>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <input 
+                                                type="number" 
+                                                value={item.quantity}
+                                                onChange={(e) => updateQuantity(item.d_id || item.f_id, item.d_id ? 'd_id' : 'f_id', parseInt(e.target.value))}
+                                                className="w-16 text-center border rounded-md"
+                                            />
+                                            <button onClick={() => removeFromCart(item.d_id || item.f_id, item.d_id ? 'd_id' : 'f_id')} className="text-red-500 hover:text-red-700">
+                                                <FaTrash />
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
-                        ))}
-                        <hr />
-                        <h3 style={{ textAlign: 'right' }}>Total: LKR {getTotalPrice()}</h3>
-                        <textarea
-                            value={specialNotes}
-                            onChange={(e) => setSpecialNotes(e.target.value)}
-                            placeholder="Special notes..."
-                            style={{ width: '100%', height: '60px', marginTop: '10px' }}
-                        />
-                        <button onClick={handlePlaceOrder} style={{ width: '100%', padding: '10px', marginTop: '10px', background: 'green', color: 'white' }}>
-                            Place Order
-                        </button>
-                        {message && cart.length === 0 && <p style={{ color: 'green' }}>{message}</p>}
-                    </>
-                )}
+                            <div className="border-t mt-6 pt-4">
+                                <div className="flex justify-between font-bold text-xl">
+                                    <span>Total:</span>
+                                    <span>Rs. {cartTotal.toFixed(2)}</span>
+                                </div>
+                                <button onClick={handlePlaceOrder} disabled={isLoading || !user} className="mt-6 w-full bg-green-500 text-white py-3 rounded-lg font-bold text-lg hover:bg-green-600 disabled:bg-gray-400">
+                                    {isLoading ? 'Placing Order...' : (user ? 'Place Order' : 'Login to Order')}
+                                </button>
+                            </div>
+                        </>
+                    )}
+                </div>
             </div>
         </div>
     );

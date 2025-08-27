@@ -80,7 +80,7 @@ export const getCusName = async (id) => {
 // Add to models/customerModel.js
 export const getAllCustomersModel = async () => {
   const [rows] = await pool.query(
-    `SELECT cus_id, name, email, phone, address, created_at, staus 
+    `SELECT cus_id, name, email, address, created_at, staus 
      FROM customers 
      WHERE role = 'customers'`
   );
