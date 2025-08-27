@@ -40,7 +40,7 @@ export const getCusName = async (id) => {
   try {
     //const response = await api.get(`/user/getCusName/${id}`);
     const response = await api.get(`/user/getCusName/${id}`);
-
+    console.log("Name of customer", response.data);
     return response.data; // Adjust based on your API response structure
   } catch (error) {
     console.error('Error fetching customers name:', error);

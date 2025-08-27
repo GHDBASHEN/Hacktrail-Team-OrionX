@@ -12,7 +12,7 @@ export const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [customerName, setCustomerName] = useState('unknown');
   const dropdownRef = useRef(null);
-  const mobileMenuRef = useRef(null);
+  const mobileMenuRef = useRef(null); 
 
   useEffect(() => {
     if (sessionStorage.getItem('role') === 'admin') {
