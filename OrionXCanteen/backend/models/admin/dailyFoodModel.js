@@ -15,7 +15,7 @@ export const create = async (dailyFoodData) => {
             [d_name, meal_date, meal_price]
         );
         if (components && components.length > 0) {
-            const componentPromises = components.map(dfc_id => 
+            const componentPromises = components.map(dfc_id =>
                 connection.execute('INSERT INTO daily_food_daily_component (d_id, dfc_id) VALUES (?, ?)', [d_id, dfc_id])
             );
             await Promise.all(componentPromises);
@@ -100,6 +100,34 @@ export const update = async (dailyFoodId, dailyFoodData) => {
 
 // Delete a daily food item (no changes needed)
 export const remove = async (dailyFoodId) => {
-    const [result] = await db.execute('DELETE FROM daily_food WHERE d_id = ?', [dailyFoodId]);
-    return result.affectedRows > 0;
+    const connection = await db.getConnection();
+    try {
+        // Start a transaction
+        await connection.beginTransaction();
+
+        // Step 1: Delete the associations from the junction table first
+        await connection.execute(
+            'DELETE FROM daily_food_daily_component WHERE d_id = ?',
+            [dailyFoodId]
+        );
+
+        // Step 2: Delete the main daily_food item
+        const [result] = await connection.execute(
+            'DELETE FROM daily_food WHERE d_id = ?',
+            [dailyFoodId]
+        );
+
+        // If both operations were successful, commit the transaction
+        await connection.commit();
+
+        return result.affectedRows > 0;
+    } catch (error) {
+        // If any error occurs, roll back the entire transaction
+        await connection.rollback();
+        console.error("Error in remove dailyFoodModel:", error);
+        throw error; // Re-throw the error to be handled by the controller
+    } finally {
+        // Always release the connection back to the pool
+        connection.release();
+    }
 };

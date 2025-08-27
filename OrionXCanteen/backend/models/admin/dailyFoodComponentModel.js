@@ -35,6 +35,34 @@ export const update = async (componentId, componentData) => {
 
 // Delete a daily food component
 export const remove = async (componentId) => {
-    const [result] = await db.execute('DELETE FROM daily_food_component WHERE dfc_id = ?', [componentId]);
-    return result.affectedRows > 0;
+    const connection = await db.getConnection();
+    try {
+        // Start a transaction
+        await connection.beginTransaction();
+
+        // Step 1: Delete associations from the junction table first
+        await connection.execute(
+            'DELETE FROM daily_food_daily_component WHERE dfc_id = ?',
+            [componentId]
+        );
+
+        // Step 2: Delete the component itself
+        const [result] = await connection.execute(
+            'DELETE FROM daily_food_component WHERE dfc_id = ?',
+            [componentId]
+        );
+
+        // If both were successful, commit the transaction
+        await connection.commit();
+
+        return result.affectedRows > 0;
+    } catch (error) {
+        // If any error occurs, roll back the transaction
+        await connection.rollback();
+        console.error("Error in remove dailyFoodComponentModel:", error);
+        throw error; // Re-throw the error for the controller to handle
+    } finally {
+        // Always release the connection
+        connection.release();
+    }
 };
