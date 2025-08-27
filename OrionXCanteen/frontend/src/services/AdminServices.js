@@ -42,3 +42,47 @@ export const deleteFood = async (foodId) => {
     const response = await api.delete(`/foods/${foodId}`);
     return response.data;
 };
+
+
+
+// Daily Food Services
+export const createDailyFood = async (dailyFoodData) => {
+    const response = await api.post('/admin/daily-foods', dailyFoodData);
+    return response.data;
+};
+
+export const getAllDailyFoods = async () => {
+    const response = await api.get('/admin/daily-foods');
+    return response.data;
+};
+
+export const updateDailyFood = async (id, dailyFoodData) => {
+    const response = await api.put(`/admin/daily-foods/${id}`, dailyFoodData);
+    return response.data;
+};
+
+export const deleteDailyFood = async (id) => {
+    const response = await api.delete(`/admin/daily-foods/${id}`);
+    return response.data;
+};
+
+// Daily Food Component Services
+export const createDailyFoodComponent = async (componentData) => {
+    const response = await api.post('/admin/daily-food-components', componentData);
+    return response.data;
+};
+
+export const getAllDailyFoodComponents = async () => {
+    const response = await api.get('/admin/daily-food-components');
+    return response.data;
+};
+
+export const updateDailyFoodComponent = async (id, componentData) => {
+    const response = await api.put(`/admin/daily-food-components/${id}`, componentData);
+    return response.data;
+};
+
+export const deleteDailyFoodComponent = async (id) => {
+    const response = await api.delete(`/admin/daily-food-components/${id}`);
+    return response.data;
+};
