@@ -60,54 +60,70 @@ export const deleteFood = async (req, res) => {
 
 
 /////////////////////////////////////////////////
-// Get today's menu
-export const getTodaysMenu = async (req, res) => {
-  try {
-    const { meal_type } = req.query;
-    const menu = await Food.getTodaysMenu(meal_type);
-    
-    res.status(200).json({
-      success: true,
-      data: menu
-    });
-  } catch (error) {
-    console.error('Error fetching today\'s menu:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Failed to fetch today\'s menu',
-      error: error.message
-    });
-  }
+export const getMealAvailability = async (req, res) => {
+    try {
+        const date = req.query.date || new Date().toISOString().split('T')[0];
+        
+        const availableMealTypes = await Food.getMealTypesByDate(date);
+        
+        const availability = {
+            breakfast: availableMealTypes.includes('breakfast'),
+            lunch: availableMealTypes.includes('lunch'),
+            dinner: availableMealTypes.includes('dinner')
+        };
+        
+        res.status(200).json({
+            success: true,
+            data: {
+                date: date,
+                availability
+            }
+        });
+    } catch (error) {
+        console.error('Error checking meal availability:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to check meal availability',
+            error: error.message
+        });
+    }
 };
 
-// Get meal availability for a date
-export const getMealAvailability = async (req, res) => {
-  try {
-    const { date } = req.query;
-    const targetDate = date || new Date().toISOString().split('T')[0];
-    
-    const mealTypes = await Food.getMealTypesByDate(targetDate);
-    
-    // Check which meal types are available
-    const availability = {
-      breakfast: mealTypes.includes('breakfast'),
-      lunch: mealTypes.includes('lunch'),
-      dinner: mealTypes.includes('dinner')
-    };
-    
-    res.status(200).json({
-      success: true,
-      data: {
-        date: targetDate,
-        availability
-      }
-    });
-  } catch (error) {
-    console.error('Error checking meal availability:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Failed to check meal availability',
-      error: error.message
-    });
-  }
+// Controller to get today's menu
+export const getTodaysMenu = async (req, res) => {
+    try {
+        const menu = await Food.getTodaysMenu();
+        
+        // Combine daily and standard foods into a single array for the frontend
+        const allItems = [
+            ...menu.dailyFoods.map(item => ({
+                food_id: item.d_id,
+                food_name: item.d_name,
+                price: item.meal_price,
+                meal_type: item.meal_type,
+                components: item.components,
+                is_available: true, // Assuming if it's fetched, it's available
+            })),
+            ...menu.standardFoods.map(item => ({
+                food_id: item.f_id,
+                food_name: item.f_name,
+                price: item.price,
+                meal_type: 'any', // Standard items don't have a specific meal type
+                components: null,
+                is_available: true,
+            }))
+        ];
+        
+        res.status(200).json({
+            success: true,
+            data: allItems // This now sends a single, combined array
+        });
+    } catch (error) {
+        console.error("Error fetching today's menu:", error);
+        res.status(500).json({
+            success: false,
+            message: "Failed to fetch today's menu",
+            error: error.message
+        });
+    }
 };
