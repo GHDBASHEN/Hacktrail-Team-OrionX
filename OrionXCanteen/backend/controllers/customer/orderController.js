@@ -32,3 +32,20 @@ export const placeOrder = async (req, res) => {
         res.status(500).json({ message: "Failed to place order.", error: error.message });
     }
 };
+
+export const getCustomerOrders = async (req, res) => {
+    try {
+        const customerId = req.params.customerId;
+        if (!customerId) {
+            return res.status(400).json({ message: "Customer ID is required." });
+        }
+
+        const orders = await OrderModel.findOrdersByCustomerId(customerId);
+        
+        res.status(200).json(orders);
+
+    } catch (error) {
+        console.error("Error in getCustomerOrders controller:", error);
+        res.status(500).json({ message: "Failed to retrieve orders.", error: error.message });
+    }
+};

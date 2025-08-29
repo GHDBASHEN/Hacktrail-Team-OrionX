@@ -1,4 +1,4 @@
-// Header.js
+// Header.js (updated)
 import { useContext, React, useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/Authcontext';
@@ -150,6 +150,14 @@ export const Header = () => {
                     </li>
                     <li>
                       <Link
+                        to="/null"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        My Orders
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
                         to="#"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                         onClick={() => setIsUserDropdownOpen(false)}
@@ -205,11 +213,11 @@ export const Header = () => {
               </li>
               <li>
                 <Link
-                  to="/menu"
+                  to="/Menus"
                   className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  Weekly Menu
+                  Order Now
                 </Link>
               </li>
               <li>
@@ -218,7 +226,7 @@ export const Header = () => {
                   className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0 font-semibold text-blue-600"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  Order Now
+                  My Orders
                 </Link>
               </li>
               {user && (

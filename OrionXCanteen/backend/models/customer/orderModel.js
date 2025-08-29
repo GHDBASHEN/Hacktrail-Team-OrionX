@@ -99,3 +99,26 @@ export const createOrder = async (customerId, cartItems) => {
         connection.release();
     }
 };
+
+
+
+export const findOrdersByCustomerId = async (customerId) => {
+    const [orders] = await db.execute(
+        `SELECT 
+            o.order_id,
+            o.order_date,
+            o.total_amount,
+            o.status,
+            o.payment_status,
+            COALESCE(df.d_name, f.f_name) AS item_name,
+            c.item_count
+         FROM orders o
+         JOIN cart c ON o.cart_id = c.cart_id
+         LEFT JOIN daily_food df ON c.d_id = df.d_id
+         LEFT JOIN food f ON c.f_id = f.f_id
+         WHERE c.cus_id = ?
+         ORDER BY o.order_date DESC`,
+        [customerId]
+    );
+    return orders;
+};

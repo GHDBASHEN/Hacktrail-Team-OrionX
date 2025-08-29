@@ -168,7 +168,7 @@ export const Home = () => {
                 Check Availability
               </button>
               <button
-                onClick={() => navigate('/order')}
+                onClick={() => navigate('/Menus')}
                 className="bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:from-orange-600 hover:to-orange-700 font-semibold py-3 px-8 rounded-full transition duration-300 transform hover:-translate-y-1 shadow-lg"
               >
                 Order Now

@@ -1,10 +1,10 @@
 
 import React, { useContext } from 'react'
-import CustomerOrderPage from '../pages/Customer/CustomerOrderPage'
+import CustomerOrderPage from './Customer/CustomerOrderPage'
 import { AuthContext } from '../context/Authcontext' // adjust path as needed
 // import CustomerOrder from './customer/CustomerOr';
 
-const Profile = () => {
+const Menus = () => {
   const { user } = useContext(AuthContext);
   const customerId = user?.id; // or user?.customerId if that's your field
 
@@ -16,4 +16,4 @@ const Profile = () => {
   )
 }
 
-export default Profile;
+export default Menus;
