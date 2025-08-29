@@ -12,3 +12,8 @@ export const placeOrder = async (orderData) => {
     const response = await api.post('/customer/orders', orderData);
     return response.data;
 };
+
+export const getCustomerOrders = async (customerId) => {
+    const response = await api.get(`/customer/orders/${customerId}`);
+    return response.data;
+}

@@ -13,22 +13,39 @@ export const getMenu = async (req, res) => {
 // Controller to place a new order
 export const placeOrder = async (req, res) => {
     try {
-        // Assuming customer ID is available from an auth middleware, e.g., req.user.id
-        // For now, we'll get it from the request body for testing.
         const { customerId, cartItems } = req.body;
 
         if (!customerId || !cartItems || cartItems.length === 0) {
             return res.status(400).json({ message: "Customer ID and cart items are required." });
         }
 
+        // The model returns { orderId, totalAmount }
         const orderDetails = await OrderModel.createOrder(customerId, cartItems);
         
+        // **FIX**: Use the correct property names returned from the model
         res.status(201).json({ 
             message: "Order placed successfully!", 
-            orderId: orderDetails.order_id, // This is the token
-            totalAmount: orderDetails.total_amount
+            orderId: orderDetails.orderId, // Changed from order_id
+            totalAmount: orderDetails.totalAmount // Changed from total_amount
         });
     } catch (error) {
         res.status(500).json({ message: "Failed to place order.", error: error.message });
+    }
+};
+
+export const getCustomerOrders = async (req, res) => {
+    try {
+        const customerId = req.params.customerId;
+        if (!customerId) {
+            return res.status(400).json({ message: "Customer ID is required." });
+        }
+
+        const orders = await OrderModel.findOrdersByCustomerId(customerId);
+        
+        res.status(200).json(orders);
+
+    } catch (error) {
+        console.error("Error in getCustomerOrders controller:", error);
+        res.status(500).json({ message: "Failed to retrieve orders.", error: error.message });
     }
 };

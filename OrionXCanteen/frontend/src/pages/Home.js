@@ -168,7 +168,7 @@ export const Home = () => {
                 Check Availability
               </button>
               <button
-                onClick={() => navigate('/order')}
+                onClick={() => navigate('/Menus')}
                 className="bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:from-orange-600 hover:to-orange-700 font-semibold py-3 px-8 rounded-full transition duration-300 transform hover:-translate-y-1 shadow-lg"
               >
                 Order Now
@@ -336,7 +336,7 @@ export const Home = () => {
                       <button 
                         className={`px-4 py-2 rounded-lg font-medium ${item.is_available ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700' : 'bg-gray-300 text-gray-500 cursor-not-allowed'} transition duration-300`}
                         disabled={!item.is_available}
-                        onClick={() => navigate('/order', { state: { food: item } })}
+                        onClick={() => navigate('/Menus', { state: { food: item } })}
                       >
                         {item.is_available ? 'Order Now' : 'Not Available'}
                       </button>
@@ -364,7 +364,7 @@ export const Home = () => {
               View Weekly Menu
             </button>
             <button 
-              onClick={() => navigate('/order')}
+              onClick={() => navigate('/Menus')}
               className="px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold rounded-full hover:from-orange-600 hover:to-orange-700 transition duration-300 shadow-lg"
             >
               Order Now
