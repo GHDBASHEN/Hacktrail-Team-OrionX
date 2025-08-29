@@ -364,7 +364,7 @@ export const Home = () => {
               View Weekly Menu
             </button>
             <button 
-              onClick={() => navigate('/order')}
+              onClick={() => navigate('/Menus')}
               className="px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold rounded-full hover:from-orange-600 hover:to-orange-700 transition duration-300 shadow-lg"
             >
               Order Now

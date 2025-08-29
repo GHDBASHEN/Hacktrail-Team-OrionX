@@ -46,7 +46,7 @@ function App() {
             <Route path="/forgot-password" element={<ResetPassword />} />
             <Route path="/forgot-password/success" element={<ForgotPswdSuccess />} />
             <Route path="/forgot-password/update" element={<UpdatePassword />} />
-            <Route path="/order" element={<CustomerOrders />} />
+            <Route path="/order" element={<ProtectedRoute name="customer"><CustomerOrders /></ProtectedRoute>} />
             {/* Customer Event Planning */}
 
 
