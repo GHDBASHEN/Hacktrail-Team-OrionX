@@ -336,7 +336,7 @@ export const Home = () => {
                       <button 
                         className={`px-4 py-2 rounded-lg font-medium ${item.is_available ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700' : 'bg-gray-300 text-gray-500 cursor-not-allowed'} transition duration-300`}
                         disabled={!item.is_available}
-                        onClick={() => navigate('/order', { state: { food: item } })}
+                        onClick={() => navigate('/Menus', { state: { food: item } })}
                       >
                         {item.is_available ? 'Order Now' : 'Not Available'}
                       </button>
