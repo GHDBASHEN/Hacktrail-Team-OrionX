@@ -4,9 +4,15 @@ import CategoryManagement from '../../pages/Admin/CreateCategory';
 import FoodManagement from '../../pages/Admin/FoodManagement';
 import DailyFoodManagement from '../../pages/Admin/DailyFoodManagement';
 import DailyFoodComponentManagement from '../../pages/Admin/DailyFoodComponentManagement';
+import OrderManagement from '../../pages/Admin/OrderManagement';
 
 const FoodManagementSAN = ({ setRenderContent, closeMobileMenu }) => {
     const navItems = [
+        {
+            label: 'Order Management',
+            icon: <FaPlus className="mr-3" />,
+            component: () => <OrderManagement />,
+        },
         {
             label: 'Categories',
             icon: <FaBoxOpen className="mr-3" />,

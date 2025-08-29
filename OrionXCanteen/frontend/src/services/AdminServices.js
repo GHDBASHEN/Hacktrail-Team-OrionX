@@ -86,3 +86,16 @@ export const deleteDailyFoodComponent = async (id) => {
     const response = await api.delete(`/admin/daily-food-components/${id}`);
     return response.data;
 };
+
+
+
+// Order Management Services
+export const getAllAdminOrders = async () => {
+    const response = await api.get('/admin/orders');
+    return response.data;
+};
+
+export const updateOrderStatus = async (orderId, status) => {
+    const response = await api.put(`/admin/orders/${orderId}/status`, { status });
+    return response.data;
+};

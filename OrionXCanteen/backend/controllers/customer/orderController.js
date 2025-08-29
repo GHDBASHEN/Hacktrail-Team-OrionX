@@ -49,3 +49,35 @@ export const getCustomerOrders = async (req, res) => {
         res.status(500).json({ message: "Failed to retrieve orders.", error: error.message });
     }
 };
+
+// Get all orders for the admin dashboard
+export const getAllOrders = async (req, res) => {
+    try {
+        const orders = await OrderModel.getAllOrders();
+        res.status(200).json(orders);
+    } catch (error) {
+        res.status(500).json({ message: "Failed to retrieve orders.", error: error.message });
+    }
+};
+
+// Update the status of a specific order
+export const updateOrderStatus = async (req, res) => {
+    try {
+        const { orderId } = req.params;
+        const { status } = req.body;
+
+        if (!status) {
+            return res.status(400).json({ message: "New status is required." });
+        }
+
+        const success = await OrderModel.updateOrderStatus(orderId, status);
+        
+        if (success) {
+            res.status(200).json({ message: "Order status updated successfully." });
+        } else {
+            res.status(404).json({ message: "Order not found." });
+        }
+    } catch (error) {
+        res.status(500).json({ message: "Failed to update order status.", error: error.message });
+    }
+};
