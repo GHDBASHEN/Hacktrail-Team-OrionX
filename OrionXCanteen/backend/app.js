@@ -29,6 +29,7 @@ app.use('/api/mail', mailRouter);
 
 //order routes
 app.use('/api/customer',orderRoutes); // Uncomment when order routes are implemented
+app.use('/api/admin',orderRoutes)
 app.use('/api/foods', foodRoutes); // Dynamic import for food routes
 app.use('/api/admin',dailyFoodRoutes);
 app.use('/api/admin',dailyFoodComponentRoutes)

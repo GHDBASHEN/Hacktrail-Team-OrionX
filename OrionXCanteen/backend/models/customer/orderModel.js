@@ -122,3 +122,37 @@ export const findOrdersByCustomerId = async (customerId) => {
     );
     return orders;
 };
+
+
+export const getAllOrders = async () => {
+    const [rows] = await db.execute(`
+        SELECT 
+            o.order_id,
+            o.order_date,
+            o.total_amount,
+            o.status,
+            o.payment_status,
+            c.cus_id,
+            cust.name AS customer_name,
+            cust.email AS customer_email,
+            cust.contact AS customer_contact,
+            COALESCE(f.f_name, df.d_name) AS item_name,
+            c.item_count
+        FROM orders o
+        JOIN cart c ON o.cart_id = c.cart_id
+        JOIN customers cust ON c.cus_id = cust.cus_id
+        LEFT JOIN food f ON c.f_id = f.f_id
+        LEFT JOIN daily_food df ON c.d_id = df.d_id
+        ORDER BY o.order_date DESC
+    `);
+    return rows;
+};
+
+// Update the status of an order
+export const updateOrderStatus = async (orderId, newStatus) => {
+    const [result] = await db.execute(
+        'UPDATE orders SET status = ? WHERE order_id = ?',
+        [newStatus, orderId]
+    );
+    return result.affectedRows > 0;
+};
