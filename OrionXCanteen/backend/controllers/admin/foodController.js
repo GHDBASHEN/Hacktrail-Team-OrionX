@@ -3,11 +3,13 @@ import Food from '../../models/Food.js';
 
 export const createFood = async (req, res) => {
     try {
-        const { f_name, price, stock, expire_date, c_id } = req.body;
-        if (!f_name || !price || !stock || !expire_date || !c_id) {
-            return res.status(400).json({ message: "All fields are required: name, price, stock, expiry date, and category." });
+        const foodData = { ...req.body };
+        if (req.file) {
+            // Use the filename to create a relative path
+            foodData.image_path = `uploads/${req.file.filename}`;
         }
-        const newFood = await FoodModel.create(req.body);
+
+        const newFood = await FoodModel.create(foodData);
         res.status(201).json({ message: "Food item created successfully!", food: newFood });
     } catch (error) {
         console.error("Error creating food:", error);
@@ -15,6 +17,7 @@ export const createFood = async (req, res) => {
     }
 };
 
+// Get all food items
 export const getAllFoods = async (req, res) => {
     try {
         const foods = await FoodModel.findAll();
@@ -25,13 +28,20 @@ export const getAllFoods = async (req, res) => {
     }
 };
 
+// Update an existing food item, handling file upload
 export const updateFood = async (req, res) => {
     try {
-        const success = await FoodModel.update(req.params.id, req.body);
+        const foodData = { ...req.body };
+        if (req.file) {
+            // If a new file is uploaded, update the image path
+            foodData.image_path = `uploads/${req.file.filename}`;
+        }
+        
+        const success = await FoodModel.update(req.params.id, foodData);
         if (success) {
             res.status(200).json({ message: "Food item updated successfully." });
         } else {
-            res.status(404).json({ message: "Food item not found." });
+            res.status(404).json({ message: "Food item not found or no changes made." });
         }
     } catch (error) {
         console.error("Error updating food:", error);
@@ -39,6 +49,7 @@ export const updateFood = async (req, res) => {
     }
 };
 
+// Delete a food item
 export const deleteFood = async (req, res) => {
     try {
         const success = await FoodModel.remove(req.params.id);
@@ -49,7 +60,6 @@ export const deleteFood = async (req, res) => {
         }
     } catch (error) {
         console.error("Error deleting food:", error);
-        // Handle cases where the item might be in an order (a different constraint)
         if (error.code === 'ER_ROW_IS_REFERENCED_2') {
              return res.status(400).json({ message: "Cannot delete this food as it is part of an existing order." });
         }
@@ -92,9 +102,11 @@ export const getMealAvailability = async (req, res) => {
 // Controller to get today's menu
 export const getTodaysMenu = async (req, res) => {
     try {
-        const menu = await Food.getTodaysMenu();
-        
-        // Combine daily and standard foods into a single array for the frontend
+        // This model method should fetch both daily and standard foods for today.
+        // It must select 'image_path' and 'c_name' for standard foods.
+        const menu = await Food.getTodaysMenu(); 
+
+        // Combine daily and standard foods, including the image_path and correct category name
         const allItems = [
             ...menu.dailyFoods.map(item => ({
                 food_id: item.d_id,
@@ -102,28 +114,27 @@ export const getTodaysMenu = async (req, res) => {
                 price: item.meal_price,
                 meal_type: item.meal_type,
                 components: item.components,
-                is_available: true, // Assuming if it's fetched, it's available
+                image_path: item.image_path, // Pass the image path
+                is_available: true, 
             })),
             ...menu.standardFoods.map(item => ({
                 food_id: item.f_id,
                 food_name: item.f_name,
                 price: item.price,
-                meal_type: 'any', // Standard items don't have a specific meal type
+                meal_type: item.c_name || 'General', // Use the category name instead of 'any'
                 components: null,
+                image_path: item.image_path, // Pass the image path
                 is_available: true,
             }))
         ];
         
         res.status(200).json({
             success: true,
-            data: allItems // This now sends a single, combined array
+            data: allItems
         });
+
     } catch (error) {
         console.error("Error fetching today's menu:", error);
-        res.status(500).json({
-            success: false,
-            message: "Failed to fetch today's menu",
-            error: error.message
-        });
+        res.status(500).json({ success: false, message: "Failed to retrieve today's menu." });
     }
 };

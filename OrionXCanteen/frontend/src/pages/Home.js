@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
+const API_URL = 'http://localhost:8000';
+
 export const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [showIntro, setShowIntro] = useState(true);
@@ -41,9 +43,9 @@ export const Home = () => {
           // Fallback to time-based calculation if API fails
           const currentHour = new Date().getHours();
           setMealStatus({
-            breakfast: currentHour >= 7 && currentHour < 10,
-            lunch: currentHour >= 12 && currentHour < 14,
-            dinner: currentHour >= 18 && currentHour < 20
+            breakfast: currentHour >= 7 && currentHour < 11,
+            lunch: currentHour >= 11 && currentHour < 17,
+            dinner: currentHour >= 18 && currentHour < 21
           });
         }
       } catch (error) {
@@ -51,9 +53,9 @@ export const Home = () => {
         // Fallback to time-based calculation if API fails
         const currentHour = new Date().getHours();
         setMealStatus({
-          breakfast: currentHour >= 7 && currentHour < 10,
-          lunch: currentHour >= 12 && currentHour < 14,
-          dinner: currentHour >= 18 && currentHour < 20
+          breakfast: currentHour >= 7 && currentHour < 11,
+          lunch: currentHour >= 11 && currentHour < 17,
+          dinner: currentHour >= 18 && currentHour < 21
         });
       } finally {
         setLoadingStatus(prev => ({ ...prev, availability: false }));
@@ -227,8 +229,8 @@ export const Home = () => {
             <>
               <div className="grid md:grid-cols-3 gap-8">
                 {[
-                  { name: 'Breakfast', time: '7:00 AM - 9:30 AM', status: mealStatus.breakfast },
-                  { name: 'Lunch', time: '12:00 PM - 2:00 PM', status: mealStatus.lunch },
+                  { name: 'Breakfast', time: '7:00 AM - 11:00 AM', status: mealStatus.breakfast },
+                  { name: 'Lunch', time: '11:00 PM - 5:00 PM', status: mealStatus.lunch },
                   { name: 'Dinner', time: '6:00 PM - 8:00 PM', status: mealStatus.dinner }
                 ].map((meal, index) => (
                   <div key={index} className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition duration-300 transform hover:-translate-y-1">
@@ -267,77 +269,54 @@ export const Home = () => {
       </section>
 
       {/* Menu Section */}
-      <section className="py-16 bg-white" data-aos="fade-up" id='menu-sec'>
+<section className="py-16 bg-white" id='menu-sec'>
         <div className="container mx-auto px-4 md:px-8">
           <div className="text-center max-w-3xl mx-auto mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Today's Menu</h2>
             <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mb-8"></div>
-            <p className="text-lg text-gray-600">
-              Delicious and nutritious meals prepared daily
-            </p>
           </div>
-
-          {error ? (
-            <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-6 rounded">
-              <div className="flex">
-                <div className="flex-shrink-0">
-                  <svg className="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <div className="ml-3">
-                  <p className="text-sm text-red-700">{error}</p>
-                </div>
-              </div>
-            </div>
-          ) : null}
-
+          {error && <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-6 rounded"><p className="text-sm text-red-700">{error}</p></div>}
+          
           {loadingStatus.menu ? (
-            <div className="flex justify-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
-            </div>
+            <div className="flex justify-center py-12"><div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div></div>
           ) : menuItems.length === 0 ? (
             <div className="text-center py-12">
-              <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-              </svg>
               <h3 className="mt-2 text-sm font-medium text-gray-900">No menu available</h3>
               <p className="mt-1 text-sm text-gray-500">Check back later for today's menu items.</p>
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {menuItems.map((item) => (
-                <div key={item.food_id} className="bg-white border border-gray-200 rounded-xl shadow-md overflow-hidden hover:shadow-xl transition duration-300 transform hover:-translate-y-1">
-                  <div className="aspect-w-16 aspect-h-9 bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
-                    <div className="w-full h-48 bg-gray-200 flex items-center justify-center relative">
-                      <svg className="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
-                      <div className="absolute top-4 right-4 bg-white rounded-full p-2 shadow-md">
-                        <svg className="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                <div key={item.food_id} className="bg-white border border-gray-200 rounded-xl shadow-md overflow-hidden hover:shadow-xl transition duration-300 transform hover:-translate-y-1 flex flex-col">
+                  {/* Image Display Logic */}
+                  <div className="w-full h-48 bg-gray-200 flex items-center justify-center relative overflow-hidden">
+                    {item.image_path ? (
+                        <img 
+                          src={`${API_URL}/${item.image_path.replace(/\\/g, '/')}`} 
+                          alt={item.food_name} 
+                          className="w-full h-full object-cover" 
+                        />
+                    ) : (
+                        <svg className="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
-                      </div>
-                    </div>
+                    )}
                   </div>
-                  <div className="p-6">
+                  {/* Card Content */}
+                  <div className="p-6 flex flex-col flex-grow">
                     <div className="flex justify-between items-start">
                       <h3 className="text-xl font-bold text-gray-900">{item.food_name}</h3>
-                      <span className={`px-2 py-1 rounded-full text-xs font-semibold ${item.is_available ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                        {item.is_available ? 'Available' : 'Sold Out'}
-                      </span>
+                      <span className={`px-2 py-1 rounded-full text-xs font-semibold ${item.is_available ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>{item.is_available ? 'Available' : 'Sold Out'}</span>
                     </div>
-                    <p className="text-gray-600 mt-2">Meal Type: {getMealTypeDisplay(item.meal_type)}</p>
-                    {item.components && (
-                      <p className="text-gray-600 mt-1 text-sm">Includes: {item.components}</p>
-                    )}
-                    <div className="mt-4 flex justify-between items-center">
+                    {/* Display Meal Type (Breakfast, etc.) or Category Name (Snacks, etc.) */}
+                    <p className="text-gray-600 mt-2">Type: {getMealTypeDisplay(item.meal_type)}</p>
+                    {item.components && (<p className="text-gray-600 mt-1 text-sm">Includes: {item.components}</p>)}
+                    <div className="mt-auto pt-4 flex justify-between items-center">
                       <span className="text-2xl font-bold text-blue-600">{formatPrice(item.price)}</span>
                       <button 
-                        className={`px-4 py-2 rounded-lg font-medium ${item.is_available ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700' : 'bg-gray-300 text-gray-500 cursor-not-allowed'} transition duration-300`}
-                        disabled={!item.is_available}
-                        onClick={() => navigate('/Menus', { state: { food: item } })}
-                      >
+                        className={`px-4 py-2 rounded-lg font-medium ${item.is_available ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700' : 'bg-gray-300 text-gray-500 cursor-not-allowed'} transition duration-300`} 
+                        disabled={!item.is_available} 
+                        onClick={() => navigate('/Menus', { state: { food: item } })}>
                         {item.is_available ? 'Order Now' : 'Not Available'}
                       </button>
                     </div>
@@ -428,7 +407,7 @@ export const Home = () => {
             <div className="relative h-96">
               <iframe
                 className="absolute inset-0 w-full h-full"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.207374256383!2d80.56920231476922!3d6.321286295402285!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae3a3dff0d2110d%3A0x9b356ad5f87e0c84!2sUniversity%20of%20Ruhuna%20-%20Faculty%20of%20Technology!5e0!3m2!1sen!2slk!4v1652345678901!5m2!1sen!2slk"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126959.91025193706!2d80.45960705081454!3d6.063477775930582!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae141585ad5987d%3A0x717cf948bd5444ff!2sFaculty%20of%20Technology%20-%20University%20of%20Ruhuna!5e0!3m2!1sen!2slk!4v1756584186533!5m2!1sen!2slk"
                 allowFullScreen=""
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
@@ -438,8 +417,9 @@ export const Home = () => {
             <div className="p-6 bg-gradient-to-r from-blue-50 to-blue-100">
               <h3 className="text-xl font-bold text-gray-900 mb-2">FOT Canteen</h3>
               <p className="text-gray-600 mb-2">Faculty of Technology, University of Ruhuna</p>
-              <p className="text-gray-600">Hapugala, Galle, Sri Lanka</p>
-              <p className="text-gray-600 mt-2">Phone: +94 91 224 5000 | Email: fot@ruh.ac.lk</p>
+              <p className="text-gray-600">Kamburupitriya, Matara, Sri Lanka</p>
+              <p className="text-gray-600 mt-2">Phone: +94413 006 134  </p>
+              <p className="text-gray-600 mt-2">Web: <a href ="https://www.tec.ruh.ac.lk" target="_blank" className="text-blue-600 hover:underline">https://www.tec.ruh.ac.lk</a></p>
             </div>
           </div>
         </div>

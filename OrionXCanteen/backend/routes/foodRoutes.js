@@ -30,17 +30,18 @@ import {
   getTodaysMenu,
   getMealAvailability 
 } from '../controllers/admin/foodController.js';
+import upload from '../middleware/upload.js';
 
 const router = express.Router();
 
 // POST /api/foods -> Create a new food item
-router.post('/', createFood);
+router.post('/', upload.single('image'), createFood);
 
 // GET /api/foods -> Get all food items (with optional query params: date, meal_type, available)
 router.get('/', getAllFoods);
 
 // PUT /api/foods/:id -> Update a food item
-router.put('/:id', updateFood);
+router.put('/:id', upload.single('image'), updateFood);
 
 // DELETE /api/foods/:id -> Delete a food item
 router.delete('/:id', deleteFood);

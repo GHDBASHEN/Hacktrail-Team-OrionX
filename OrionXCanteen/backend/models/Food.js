@@ -17,13 +17,14 @@ class Food {
     static async getTodaysMenu() {
         const today = new Date().toISOString().split('T')[0];
 
-        // Query 1: Get daily meal packages scheduled for today or later
+        // Query 1: Get daily meal packages scheduled for today or later, including images
         const [dailyFoods] = await pool.execute(
             `SELECT 
                 df.d_id, 
                 df.d_name, 
                 df.meal_type, 
                 df.meal_price,
+                df.image_path,
                 GROUP_CONCAT(dfc.dfc_name SEPARATOR ', ') as components
              FROM 
                 daily_food df
@@ -40,9 +41,17 @@ class Food {
             [today]
         );
 
-        // Query 2: Get standard food items from the 'food' table
+        // Query 2: Get standard food items from the 'food' table, including images
         const [standardFoods] = await pool.execute(
-            `SELECT f_id, f_name, price FROM food WHERE stock > 0 AND expire_date >= ?`,
+            `SELECT 
+                f.f_id, 
+                f.f_name, 
+                f.price, 
+                f.image_path,
+                c.c_name 
+             FROM food f
+             LEFT JOIN category c ON f.c_id = c.c_id
+             WHERE f.stock > 0 AND f.expire_date >= ?`,
             [today]
         );
 

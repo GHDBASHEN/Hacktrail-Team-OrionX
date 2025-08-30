@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { createFood, getAllFoods, updateFood, deleteFood, getAllCategories } from '../../services/AdminServices';
+import { createFood, getAllFoods, updateFood, deleteFood, getAllCategories } from '../../services/AdminServices.js';
+
+const API_URL = 'http://localhost:8000'; // Define the base URL for images
 
 const FoodManagement = () => {
     const [foods, setFoods] = useState([]);
@@ -13,6 +15,8 @@ const FoodManagement = () => {
         c_id: ''
     };
     const [formData, setFormData] = useState(initialFormState);
+    const [imageFile, setImageFile] = useState(null);
+    const [imagePreview, setImagePreview] = useState('');
     
     const [isEditing, setIsEditing] = useState(false);
     const [currentFoodId, setCurrentFoodId] = useState(null);
@@ -33,7 +37,6 @@ const FoodManagement = () => {
             ]);
             setFoods(foodsData);
             setCategories(categoriesData);
-            // Set default category in form if not editing
             if (!isEditing && categoriesData.length > 0) {
                 setFormData(prev => ({ ...prev, c_id: categoriesData[0].c_id }));
             }
@@ -49,10 +52,23 @@ const FoodManagement = () => {
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setImageFile(file);
+            setImagePreview(URL.createObjectURL(file));
+        }
+    };
+
     const resetForm = () => {
         setFormData(initialFormState);
         setIsEditing(false);
         setCurrentFoodId(null);
+        setImageFile(null);
+        setImagePreview('');
+        if (document.getElementById('image-upload')) {
+            document.getElementById('image-upload').value = null;
+        }
         if (categories.length > 0) {
             setFormData(prev => ({ ...prev, c_id: categories[0].c_id }));
         }
@@ -64,12 +80,22 @@ const FoodManagement = () => {
         setMessage('');
         setLoading(true);
 
+        const formDataToSend = new FormData();
+        formDataToSend.append('f_name', formData.f_name);
+        formDataToSend.append('price', formData.price);
+        formDataToSend.append('stock', formData.stock);
+        formDataToSend.append('expire_date', formData.expire_date);
+        formDataToSend.append('c_id', formData.c_id);
+        if (imageFile) {
+            formDataToSend.append('image', imageFile);
+        }
+
         try {
             if (isEditing) {
-                await updateFood(currentFoodId, formData);
+                await updateFood(currentFoodId, formDataToSend);
                 setMessage('Food item updated successfully!');
             } else {
-                await createFood(formData);
+                await createFood(formDataToSend);
                 setMessage('Food item created successfully!');
             }
             resetForm();
@@ -89,8 +115,10 @@ const FoodManagement = () => {
             c_id: food.c_id || '',
             price: food.price,
             stock: food.stock,
-            expire_date: new Date(food.expire_date).toISOString().split('T')[0] // Format for date input
+            expire_date: new Date(food.expire_date).toISOString().split('T')[0]
         });
+        setImageFile(null);
+        setImagePreview(food.image_path ? `${API_URL}/${food.image_path}` : '');
         document.getElementById('food-form').scrollIntoView({ behavior: 'smooth' });
     };
 
@@ -110,7 +138,7 @@ const FoodManagement = () => {
 
     return (
         <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-6xl mx-auto">
+            <div className="max-w-7xl mx-auto">
                 <div className="text-center mb-10">
                     <h1 className="text-3xl font-bold text-gray-900 mb-2">Standard Food Management</h1>
                     <p className="text-gray-600">Manage individual food items available for purchase.</p>
@@ -145,6 +173,21 @@ const FoodManagement = () => {
                             <label className="block text-sm font-medium text-gray-700">Expiry Date</label>
                             <input name="expire_date" type="date" value={formData.expire_date} onChange={handleInputChange} required className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"/>
                         </div>
+                        <div className="lg:col-span-1 md:col-span-2">
+                             <label className="block text-sm font-medium text-gray-700">Food Image</label>
+                            <div className="mt-1 flex items-center space-x-4">
+                                <span className="h-20 w-20 rounded-md overflow-hidden bg-gray-100">
+                                    {imagePreview ? (
+                                        <img src={imagePreview} alt="Preview" className="h-full w-full object-cover"/>
+                                    ) : (
+                                        <div className="h-full w-full flex items-center justify-center text-gray-400">
+                                            <svg className="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                        </div>
+                                    )}
+                                </span>
+                                <input id="image-upload" type="file" name="image" onChange={handleFileChange} className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"/>
+                            </div>
+                        </div>
                     </div>
                     <div className="flex space-x-3 mt-6 justify-end">
                         {isEditing && <button type="button" onClick={resetForm} className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-md">Cancel</button>}
@@ -161,6 +204,7 @@ const FoodManagement = () => {
                             <table className="min-w-full divide-y divide-gray-200">
                                 <thead className="bg-gray-50">
                                     <tr>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Image</th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
@@ -172,6 +216,17 @@ const FoodManagement = () => {
                                 <tbody className="bg-white divide-y divide-gray-200">
                                     {foods.map((food) => (
                                         <tr key={food.f_id} className="hover:bg-gray-50">
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                                <div className="h-12 w-12 flex-shrink-0">
+                                                    {food.image_path ? (
+                                                        <img className="h-12 w-12 rounded-md object-cover" src={`${API_URL}/${food.image_path}`} alt={food.f_name} />
+                                                    ) : (
+                                                        <div className="h-12 w-12 rounded-md bg-gray-100 flex items-center justify-center text-gray-400">
+                                                          <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </td>
                                             <td className="px-6 py-4 whitespace-nowrap font-medium text-gray-900">{food.f_name}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{food.c_name || 'N/A'}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rs. {parseFloat(food.price).toFixed(2)}</td>
@@ -194,3 +249,4 @@ const FoodManagement = () => {
 };
 
 export default FoodManagement;
+
