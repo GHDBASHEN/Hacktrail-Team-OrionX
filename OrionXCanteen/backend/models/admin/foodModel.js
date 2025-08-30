@@ -4,14 +4,12 @@ import db from '../../config/db.js';
 export const create = async (foodData) => {
     const { f_name, price, stock, expire_date, c_id, image_path } = foodData;
     
-    // Generate a unique food ID
-    const f_id = `F${Date.now()}`;
 
     const [result] = await db.execute(
-        'INSERT INTO food (f_id, f_name, price, stock, expire_date, c_id, image_path) VALUES (?, ?, ?, ?, ?, ?, ?)',
-        [f_id, f_name, price, stock, expire_date, c_id, image_path || null]
+        'INSERT INTO food (f_name, price, stock, expire_date, c_id, image_path) VALUES (?, ?, ?, ?, ?, ?)',
+        [f_name, price, stock, expire_date, c_id, image_path || null]
     );
-    return { f_id, ...foodData };
+    return {...foodData };
 };
 
 // Find all food items, now including the image path
