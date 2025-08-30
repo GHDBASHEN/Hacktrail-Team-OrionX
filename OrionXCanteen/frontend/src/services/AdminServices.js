@@ -46,8 +46,9 @@ export const deleteFood = async (foodId) => {
 
 
 // Daily Food Services
-export const createDailyFood = async (dailyFoodData) => {
-    const response = await api.post('/admin/daily-foods', dailyFoodData);
+export const createDailyFood = async (dailyFoodFormData) => {
+    // When sending FormData, Axios automatically sets the correct 'Content-Type' header
+    const response = await api.post('/admin/daily-foods', dailyFoodFormData);
     return response.data;
 };
 
@@ -56,8 +57,8 @@ export const getAllDailyFoods = async () => {
     return response.data;
 };
 
-export const updateDailyFood = async (id, dailyFoodData) => {
-    const response = await api.put(`/admin/daily-foods/${id}`, dailyFoodData);
+export const updateDailyFood = async (id, dailyFoodFormData) => {
+    const response = await api.put(`/admin/daily-foods/${id}`, dailyFoodFormData);
     return response.data;
 };
 

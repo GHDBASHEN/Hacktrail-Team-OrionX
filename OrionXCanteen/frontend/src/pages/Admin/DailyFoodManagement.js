@@ -7,7 +7,10 @@ import {
     getAllCategories, 
     getAllDailyFoodComponents 
 } from '../../services/AdminServices';
-import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { FaChevronDown, FaChevronUp, FaImage } from 'react-icons/fa';
+
+// Define the base URL of your backend server.
+const API_URL = 'http://localhost:8000';
 
 const DailyFoodManagement = () => {
     const [dailyFoods, setDailyFoods] = useState([]);
@@ -17,6 +20,8 @@ const DailyFoodManagement = () => {
     
     const initialFormState = { d_name: '', meal_type: 'breakfast', meal_date: '', meal_price: '', c_id: '', components: [] };
     const [formData, setFormData] = useState(initialFormState);
+    const [imageFile, setImageFile] = useState(null);
+    const [imagePreview, setImagePreview] = useState('');
     const [isEditing, setIsEditing] = useState(false);
 
     const [error, setError] = useState('');
@@ -37,7 +42,6 @@ const DailyFoodManagement = () => {
             ]);
             setDailyFoods(foodsData.map(food => ({
                 ...food,
-                // Ensure component_ids is always an array for easier processing
                 component_ids: food.component_ids ? food.component_ids.split(',') : []
             })));
             setCategories(categoriesData);
@@ -48,6 +52,7 @@ const DailyFoodManagement = () => {
             setError('');
         } catch (err) {
             setError('Failed to fetch necessary data. Please refresh the page.');
+            console.error(err);
         } finally {
             setIsLoading(false);
         }
@@ -56,6 +61,14 @@ const DailyFoodManagement = () => {
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setImageFile(file);
+            setImagePreview(URL.createObjectURL(file));
+        }
     };
 
     const handleCheckboxChange = (e) => {
@@ -75,21 +88,39 @@ const DailyFoodManagement = () => {
             return;
         }
         
+        const submissionData = new FormData();
+        // Append all form data fields
+        Object.keys(formData).forEach(key => {
+            if (key === 'components') {
+                // Ensure components are sent correctly, especially if it's an array
+                formData[key].forEach(componentId => {
+                    submissionData.append('components', componentId);
+                });
+            } else {
+                submissionData.append(key, formData[key]);
+            }
+        });
+
+        if (imageFile) {
+            submissionData.append('image', imageFile);
+        }
+
         setIsLoading(true);
         try {
             if (isEditing) {
-                await updateDailyFood(formData.d_id, formData);
+                await updateDailyFood(formData.d_id, submissionData);
                 setMessage('Daily food updated successfully!');
             } else {
-                await createDailyFood(formData);
+                await createDailyFood(submissionData);
                 setMessage('Daily food created successfully!');
             }
             setError('');
-            cancelEditing(); // Reset form
-            fetchInitialData(); // Refresh all data
+            cancelEditing();
+            fetchInitialData();
         } catch (err) {
             setError(err.response?.data?.message || 'An error occurred while saving.');
             setMessage('');
+        } finally {
             setIsLoading(false);
         }
     };
@@ -105,6 +136,7 @@ const DailyFoodManagement = () => {
             } catch (err) {
                 setError(err.response?.data?.message || 'Failed to delete daily food.');
                 setMessage('');
+            } finally {
                 setIsLoading(false);
             }
         }
@@ -114,17 +146,26 @@ const DailyFoodManagement = () => {
         setIsEditing(true);
         setFormData({
             ...food,
-            meal_date: food.meal_date.split('T')[0], // Format date for input
+            meal_date: food.meal_date.split('T')[0],
             components: food.component_ids || []
         });
+        // Set image preview if an image exists
+        if (food.image_path) {
+            setImagePreview(`${API_URL}/${food.image_path}`);
+        } else {
+            setImagePreview('');
+        }
+        setImageFile(null);
         setMessage('');
         setError('');
-        window.scrollTo(0, 0); // Scroll to top to see the form
+        window.scrollTo(0, 0);
     };
 
     const cancelEditing = () => {
         setIsEditing(false);
         setFormData(initialFormState);
+        setImageFile(null);
+        setImagePreview('');
         if (categories.length > 0) {
             setFormData(prev => ({ ...prev, c_id: categories[0].c_id }));
         }
@@ -149,7 +190,6 @@ const DailyFoodManagement = () => {
                     <h2 className="text-xl font-semibold text-gray-800 mb-4">{isEditing ? 'Edit Daily Food' : 'Add New Daily Food'}</h2>
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {/* Basic Info */}
                             <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700">Meal Name</label>
@@ -177,20 +217,26 @@ const DailyFoodManagement = () => {
                                     <label className="block text-sm font-medium text-gray-700">Total Price (Rs.)</label>
                                     <input type="number" step="0.01" name="meal_price" value={formData.meal_price} onChange={handleInputChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required />
                                 </div>
+                                <div className="md:col-span-2">
+                                     <label className="block text-sm font-medium text-gray-700">Meal Image</label>
+                                     <div className="mt-1 flex items-center space-x-4">
+                                         <div className="flex-shrink-0 h-24 w-24 rounded-md bg-gray-100 border border-gray-300 flex items-center justify-center">
+                                             {imagePreview ? (
+                                                 <img src={imagePreview} alt="Preview" className="h-full w-full object-cover rounded-md" />
+                                             ) : (
+                                                 <FaImage className="h-10 w-10 text-gray-400" />
+                                             )}
+                                         </div>
+                                         <input type="file" name="image" onChange={handleFileChange} className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"/>
+                                     </div>
+                                 </div>
                             </div>
-                            {/* Component Selection */}
                             <div className="lg:col-span-1">
                                 <label className="block text-sm font-medium text-gray-700 mb-2">Select Components</label>
                                 <div className="bg-gray-50 border border-gray-300 rounded-md p-3 h-48 overflow-y-auto space-y-2">
                                     {allComponents.map(comp => (
                                         <label key={comp.dfc_id} className="flex items-center space-x-3 cursor-pointer">
-                                            <input 
-                                                type="checkbox" 
-                                                value={comp.dfc_id}
-                                                checked={formData.components.includes(comp.dfc_id)}
-                                                onChange={handleCheckboxChange}
-                                                className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                                            />
+                                            <input type="checkbox" value={comp.dfc_id} checked={formData.components.includes(comp.dfc_id)} onChange={handleCheckboxChange} className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"/>
                                             <span className="text-sm text-gray-800">{comp.dfc_name}</span>
                                         </label>
                                     ))}
@@ -205,13 +251,14 @@ const DailyFoodManagement = () => {
                 </div>
 
                 <div className="bg-white rounded-lg shadow-md overflow-hidden">
-                     <div className="px-6 py-5 border-b border-gray-200"><h2 className="text-lg font-medium text-gray-900">Existing Daily Foods</h2></div>
+                    <div className="px-6 py-5 border-b border-gray-200"><h2 className="text-lg font-medium text-gray-900">Existing Daily Foods</h2></div>
                     {isLoading && dailyFoods.length === 0 ? <p className="text-center py-8 text-gray-500">Loading...</p> : (
                         <div className="overflow-x-auto">
                             <table className="min-w-full divide-y divide-gray-200">
                                 <thead className="bg-gray-50">
                                     <tr>
                                         <th className="w-12"></th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Image</th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
@@ -226,6 +273,17 @@ const DailyFoodManagement = () => {
                                                 <td className="pl-4">
                                                     {expandedRowId === food.d_id ? <FaChevronUp className="text-gray-500"/> : <FaChevronDown className="text-gray-400"/>}
                                                 </td>
+                                                <td className="px-6 py-4">
+                                                    <div className="h-12 w-12 flex-shrink-0">
+                                                        {food.image_path ? (
+                                                            <img className="h-12 w-12 rounded-md object-cover" src={`${API_URL}/${food.image_path}`} alt={food.d_name} />
+                                                        ) : (
+                                                            <div className="h-12 w-12 rounded-md bg-gray-100 flex items-center justify-center">
+                                                                <FaImage className="h-6 w-6 text-gray-400" />
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm">{new Date(food.meal_date).toLocaleDateString()}</td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{food.d_name}</td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm capitalize">{food.meal_type}</td>
@@ -237,7 +295,7 @@ const DailyFoodManagement = () => {
                                             </tr>
                                             {expandedRowId === food.d_id && (
                                                 <tr>
-                                                    <td colSpan="6" className="p-0">
+                                                    <td colSpan="7" className="p-0">
                                                         <div className="bg-blue-50 px-8 py-4">
                                                             <h4 className="font-semibold text-sm text-gray-800 mb-2">Included Components:</h4>
                                                             <p className="text-sm text-gray-600">
@@ -260,3 +318,4 @@ const DailyFoodManagement = () => {
 };
 
 export default DailyFoodManagement;
+
