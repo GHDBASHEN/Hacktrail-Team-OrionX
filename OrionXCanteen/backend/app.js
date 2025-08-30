@@ -35,6 +35,7 @@ app.use('/api/admin',dailyFoodRoutes);
 app.use('/api/admin',dailyFoodComponentRoutes)
 app.use('/api/categories', categoryRoute); // Dynamic import for category routes
 
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Global error handler
 app.use((err, req, res, next) => {
