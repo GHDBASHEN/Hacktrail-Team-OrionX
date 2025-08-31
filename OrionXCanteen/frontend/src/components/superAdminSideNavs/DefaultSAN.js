@@ -12,7 +12,7 @@ const DefaultSAN = ({ setRenderContent, closeMobileMenu }) => {
     switch (display) {
       case 'overview':
         setClickedItem('overview');
-        setRenderContent(() => () => <OverView />);
+        setRenderContent(() => () => null);
         break;
       case 'foodManagement':
         setClickedItem('foodManagement');
@@ -20,10 +20,10 @@ const DefaultSAN = ({ setRenderContent, closeMobileMenu }) => {
         break;
       case 'categoryManagement':
         setClickedItem('categoryManagement');
-        setRenderContent(() => () => <CategoryManagement />);
+        setRenderContent(() => () => null);
         break;
       default:
-        setRenderContent(() => () => <OverView />);
+        setRenderContent(() => () => <FoodManagement />);
     }
     
     // Close mobile menu if it's open
@@ -33,7 +33,7 @@ const DefaultSAN = ({ setRenderContent, closeMobileMenu }) => {
   return (
     <div className='w-full'>
       <ul className="flex flex-col py-4 space-y-2">
-        <li>
+        {/* <li>
           <button 
             onClick={() => handleRenderContent('overview')}
             className={`flex items-center w-full p-3 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100 group ${
@@ -43,7 +43,7 @@ const DefaultSAN = ({ setRenderContent, closeMobileMenu }) => {
             <HiOutlineViewGrid className="w-6 h-6 text-gray-500 group-hover:text-gray-900" />
             <span className="ml-3">Overview</span>
           </button>
-        </li>
+        </li> */}
         <li>
           <button 
             onClick={() => handleRenderContent('foodManagement')}
@@ -55,7 +55,7 @@ const DefaultSAN = ({ setRenderContent, closeMobileMenu }) => {
             <span className="ml-3">Food Management</span>
           </button>
         </li>
-        <li>
+        {/* <li>
           <button
             onClick={() => handleRenderContent('categoryManagement')}
             className={`flex items-center w-full p-3 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100 group ${
@@ -65,7 +65,7 @@ const DefaultSAN = ({ setRenderContent, closeMobileMenu }) => {
             <HiOutlineCog className="w-6 h-6 text-gray-500 group-hover:text-gray-900" />
             <span className="ml-3">Category Management</span>
           </button>
-        </li>
+        </li> */}
         <li>
           <button
             className="flex items-center w-full p-3 text-base font-normal text-red-600 rounded-lg hover:bg-red-100 group"
