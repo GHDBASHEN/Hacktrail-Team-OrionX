@@ -4,11 +4,7 @@
     {
       "src": "frontend/package.json",
       "use": "@vercel/static-build",
-      "config": {
-        "installCommand": "npm install",
-        "buildCommand": "CI=false npm run build",
-        "outputDirectory": "build"
-      }
+      "config": { "buildCommand": "npm run vercel-build" }
     },
     {
       "src": "backend/server.js",
@@ -22,7 +18,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "frontend/build/$1"
+      "dest": "frontend"
     }
   ]
 }
