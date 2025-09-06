@@ -1,9 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  // This will use the Vercel env variable in production,
-  // and your local backend URL in development.
-  baseURL: 'https://hacktrail-team-orion-x.vercel.app/:8090/api',
+  baseURL: 'http://localhost:8000/api', // ✅ Use your actual server IP or domain
 });
 
 // Attach token to requests
