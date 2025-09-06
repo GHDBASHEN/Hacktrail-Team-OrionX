@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://hacktrail-team-orion-x.vercel.app/:8000/api', // ✅ Use your actual server IP or domain
+  baseURL: 'https://hacktrail-team-orion-x.vercel.app:8000/api', // ✅ Use your actual server IP or domain
 });
 
 // Attach token to requests
