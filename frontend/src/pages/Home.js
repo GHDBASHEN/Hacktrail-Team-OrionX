@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import api from '../services/Api';
 
-const API_URL = 'http://localhost:8000';
 
 export const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -33,7 +33,7 @@ export const Home = () => {
     const fetchMealAvailability = async () => {
       try {
         setLoadingStatus(prev => ({ ...prev, availability: true }));
-        const response = await fetch('http://localhost:8000/api/foods/availability');
+        const response = await api.get('/foods/availability');
         const data = await response.json();
         
         if (data.success) {
@@ -66,7 +66,7 @@ export const Home = () => {
     const fetchTodaysMenu = async () => {
       try {
         setLoadingStatus(prev => ({ ...prev, menu: true }));
-        const response = await fetch('http://localhost:8000/api/foods/today/menu');
+        const response = await api.get('/foods/today/menu');
         const data = await response.json();
         
         if (data.success) {
