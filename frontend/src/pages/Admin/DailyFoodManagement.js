@@ -10,7 +10,7 @@ import {
 import { FaChevronDown, FaChevronUp, FaImage } from 'react-icons/fa';
 
 // Define the base URL of your backend server.
-const API_URL = 'https://hacktrail-team-orion-x.vercel.app:8000';
+const API_URL = 'https://hacktrail-team-orion-x.vercel.app';
 
 const DailyFoodManagement = () => {
     const [dailyFoods, setDailyFoods] = useState([]);
