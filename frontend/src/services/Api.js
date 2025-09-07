@@ -1,8 +1,9 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:8000/api', // ✅ Use your actual server IP or domain
+  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:8000/api',
 });
+
 
 // Attach token to requests
 api.interceptors.request.use((config) => {
