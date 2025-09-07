@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: `https://hacktrail-team-orion-x-git-host-ghdbashens-projects.vercel.app/api`,
+  baseURL: `https://hacktrail-team-orion-x-cvvr-git-host-ghdbashens-projects.vercel.app/api`,
 });
 
 
