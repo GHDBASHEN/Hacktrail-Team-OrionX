@@ -5,7 +5,7 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import api from '../services/Api';
 
-const API_URL = 'https://hacktrail-team-orion-x-git-host-ghdbashens-projects.vercel.app:8000/api';
+const API_URL = 'https://hacktrail-team-orion-x-git-host-ghdbashens-projects.vercel.app/api';
 
 export const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
