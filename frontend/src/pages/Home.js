@@ -5,8 +5,6 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import api from '../services/Api';
 
-const API_URL = 'https://hacktrail-team-orion-x-cvvr-git-host-ghdbashens-projects.vercel.app:8000';
-
 export const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [showIntro, setShowIntro] = useState(true);
@@ -23,6 +21,9 @@ export const Home = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  // Base64 encoded placeholder image for when images fail to load
+  const placeholderImage = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI0VFRUVGRiIvPgogIDx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkeT0iLjM1ZW0iIGZvbnQtc2l6ZT0iMjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM5OTk5OTkiPk5vIEltYWdlPC90ZXh0Pgo8L3N2Zz4=';
+
   useEffect(() => {
     AOS.init({ duration: 1000, once: true });
     const timer = setTimeout(() => {
@@ -35,12 +36,11 @@ export const Home = () => {
       try {
         setLoadingStatus(prev => ({ ...prev, availability: true }));
         const response = await api.get('/foods/availability');
-        const data = await response.json();
         
-        if (data.success) {
-          setMealStatus(data.data.availability);
+        if (response.data.success) {
+          setMealStatus(response.data.data.availability);
         } else {
-          console.error('Failed to fetch meal availability:', data.message);
+          console.warn('Failed to fetch meal availability:', response.data.message);
           // Fallback to time-based calculation if API fails
           const currentHour = new Date().getHours();
           setMealStatus({
@@ -50,7 +50,7 @@ export const Home = () => {
           });
         }
       } catch (error) {
-        console.error('Error fetching meal availability:', error);
+        console.warn('Error fetching meal availability:', error);
         // Fallback to time-based calculation if API fails
         const currentHour = new Date().getHours();
         setMealStatus({
@@ -68,16 +68,15 @@ export const Home = () => {
       try {
         setLoadingStatus(prev => ({ ...prev, menu: true }));
         const response = await api.get('/foods/today/menu');
-        const data = await response.json();
         
-        if (data.success) {
-          setMenuItems(data.data);
+        if (response.data.success) {
+          setMenuItems(response.data.data);
         } else {
-          console.error('Failed to fetch menu:', data.message);
+          console.warn('Failed to fetch menu:', response.data.message);
           setError('Failed to load menu. Please try again later.');
         }
       } catch (error) {
-        console.error('Error fetching menu:', error);
+        console.warn('Error fetching menu:', error);
         setError('Unable to connect to the server. Please check your connection.');
       } finally {
         setLoadingStatus(prev => ({ ...prev, menu: false }));
@@ -270,7 +269,7 @@ export const Home = () => {
       </section>
 
       {/* Menu Section */}
-<section className="py-16 bg-white" id='menu-sec'>
+      <section className="py-16 bg-white" id='menu-sec'>
         <div className="container mx-auto px-4 md:px-8">
           <div className="text-center max-w-3xl mx-auto mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Today's Menu</h2>
@@ -291,17 +290,15 @@ export const Home = () => {
                 <div key={item.food_id} className="bg-white border border-gray-200 rounded-xl shadow-md overflow-hidden hover:shadow-xl transition duration-300 transform hover:-translate-y-1 flex flex-col">
                   {/* Image Display Logic */}
                   <div className="w-full h-48 bg-gray-200 flex items-center justify-center relative overflow-hidden">
-                    {item.image_path ? (
-                        <img 
-                          src={`${API_URL}/${item.image_path.replace(/\\/g, '/')}`} 
-                          alt={item.food_name} 
-                          className="w-full h-full object-cover" 
-                        />
-                    ) : (
-                        <svg className="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                    )}
+                    <img 
+                      src={item.image_path ? item.image_path : placeholderImage} 
+                      alt={item.food_name} 
+                      className="w-full h-full object-cover" 
+                      onError={(e) => {
+                        e.target.src = placeholderImage;
+                        e.target.onerror = null; // Prevent infinite loop if placeholder also fails
+                      }}
+                    />
                   </div>
                   {/* Card Content */}
                   <div className="p-6 flex flex-col flex-grow">
@@ -420,7 +417,7 @@ export const Home = () => {
               <p className="text-gray-600 mb-2">Faculty of Technology, University of Ruhuna</p>
               <p className="text-gray-600">Kamburupitriya, Matara, Sri Lanka</p>
               <p className="text-gray-600 mt-2">Phone: +94413 006 134  </p>
-              <p className="text-gray-600 mt-2">Web: <a href ="https://www.tec.ruh.ac.lk" target="_blank" className="text-blue-600 hover:underline">https://www.tec.ruh.ac.lk</a></p>
+              <p className="text-gray-600 mt-2">Web: <a href ="https://www.tec.ruh.ac.lk" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">https://www.tec.ruh.ac.lk</a></p>
             </div>
           </div>
         </div>
