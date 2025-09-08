@@ -16,24 +16,26 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // --- START: PRODUCTION-READY CORS CONFIGURATION ---
-// Replace 'https://your-frontend-url.vercel.app' with your actual frontend URL
+// This list explicitly allows your frontend to make requests.
 const allowedOrigins = [
-  'https://hacktrail-team-orion-x-cvvr-git-host-ghdbashens-projects.vercel.app', 
-  'http://localhost:3000'
+  'https://hacktrail-team-orion-x-cvvr-git-host-ghdbashens-projects.vercel.app',
+  'http://localhost:3000' // Kept for local development
 ];
 
 const corsOptions = {
   origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or curl) or from our whitelist
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      callback(new Error('This origin is not allowed by the CORS policy.'));
     }
   },
-  methods: 'GET,POST,PUT,DELETE,PATCH,HEAD,OPTIONS',
-  credentials: true
+  methods: 'GET,POST,PUT,DELETE,PATCH,HEAD,OPTIONS', // Explicitly allow all necessary methods
+  credentials: true // This is required for sending cookies or auth headers
 };
 
+// Use the robust CORS options
 app.use(cors(corsOptions));
 // --- END: PRODUCTION-READY CORS CONFIGURATION ---
 
@@ -54,6 +56,10 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Global error handler
 app.use((err, req, res, next) => {
+  // If the error is a CORS error, send a specific message
+  if (err.message === 'This origin is not allowed by the CORS policy.') {
+    return res.status(403).json({ message: err.message });
+  }
   console.error(err.stack);
   res.status(500).send('Something broke!');
 });
