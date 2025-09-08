@@ -15,27 +15,27 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// --- START: FINAL, ROBUST CORS CONFIGURATION ---
+// --- START: PRODUCTION-READY CORS CONFIGURATION ---
+// Replace 'https://your-frontend-url.vercel.app' with your actual frontend URL
 const allowedOrigins = [
-  'https://hacktrail-team-orion-x-cvvr-git-host-ghdbashens-projects.vercel.app',
-  'http://localhost:3000' // Keep for local development
+  'https://hacktrail-team-orion-x-cvvr-git-host-ghdbashens-projects.vercel.app', 
+  'http://localhost:3000'
 ];
 
 const corsOptions = {
   origin: (origin, callback) => {
-    // Allow requests with no origin (like mobile apps or curl) or from our whitelist
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
     }
   },
-  methods: 'GET,POST,PUT,DELETE,PATCH,HEAD,OPTIONS', // Explicitly allow methods
-  credentials: true // Allow cookies/authorization headers
+  methods: 'GET,POST,PUT,DELETE,PATCH,HEAD,OPTIONS',
+  credentials: true
 };
 
 app.use(cors(corsOptions));
-// --- END: FINAL, ROBUST CORS CONFIGURATION ---
+// --- END: PRODUCTION-READY CORS CONFIGURATION ---
 
 app.use(express.json());
 
