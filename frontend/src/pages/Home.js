@@ -1,4 +1,3 @@
-// Home.js
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AOS from 'aos';
@@ -112,14 +111,25 @@ export const Home = () => {
 
   return (
     <main className="font-sans bg-white">
-      {/* Hero Section */}
-      <section className="relative flex items-center justify-center h-screen overflow-hidden bg-gradient-to-br from-blue-600 via-purple-600 to-blue-800">
-        {/* Animated Background */}
+      {/* Hero Section with Video Background */}
+      <section className="relative flex items-center justify-center h-screen overflow-hidden bg-gray-900">
+        
+        {/* Background Video Container */}
         <div className="absolute inset-0 z-0">
-          <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/10 to-transparent"></div>
-          <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-white/10 to-transparent"></div>
-          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-white/5 rounded-full animate-pulse-slow"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-white/5 rounded-full animate-pulse-medium"></div>
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover"
+          >
+            {/* MAKE SURE YOUR VIDEO IS NAMED 'canteen-bg.mp4' IN THE PUBLIC FOLDER */}
+            <source src="/canteen.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          
+          {/* Dark Overlay - Ensures text is readable over the video */}
+          <div className="absolute inset-0 bg-black/60"></div>
         </div>
 
         {/* Intro Text Animation */}
@@ -179,33 +189,12 @@ export const Home = () => {
           </div>
         )}
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20 animate-bounce">
-          <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center">
-            <div className="w-1 h-3 bg-white rounded-full mt-2"></div>
-          </div>
-        </div>
-
         {/* Keyframes for Intro Animation */}
         <style>{`
           @keyframes intro { 
             0% { transform: scale(2); opacity: 0; } 
             50% { transform: scale(1); opacity: 1; } 
             100% { opacity: 0; visibility: hidden; } 
-          }
-          @keyframes pulse-slow {
-            0%, 100% { opacity: 0.1; transform: scale(1); }
-            50% { opacity: 0.2; transform: scale(1.1); }
-          }
-          @keyframes pulse-medium {
-            0%, 100% { opacity: 0.1; transform: scale(1); }
-            50% { opacity: 0.15; transform: scale(1.05); }
-          }
-          .animate-pulse-slow {
-            animation: pulse-slow 6s infinite;
-          }
-          .animate-pulse-medium {
-            animation: pulse-medium 4s infinite;
           }
         `}</style>
       </section>
