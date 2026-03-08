@@ -7,6 +7,7 @@ class Food {
             [date]
         );
         return rows.map(row => row.meal_type);
+        
     }
 
     /**

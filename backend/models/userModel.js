@@ -23,7 +23,7 @@ export const registerEmployeeModel = async (pswd, employee_id) => {
 export const getUserByUserEmailORPswdModel = async (credential) => {
     console.log(typeof (credential))
     const [result] = await pool.query(
-        'SELECT id, password, user_role, email, refresh_token FROM employees WHERE email = ? OR phone = ?',
+        'SELECT id, password, role, email, refresh_token FROM employees WHERE email = ? OR phone = ?',
         [credential, parseInt(credential, 10) || 0]
         //[credential, credential]
     );

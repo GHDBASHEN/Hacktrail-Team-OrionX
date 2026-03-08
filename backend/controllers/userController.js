@@ -88,16 +88,16 @@ export const addEmployee = async (req, res) => {
 
 // add new customers
 export const addCustomer = async (req, res) => {
-    const { name, contact, email, password } = req.body;
-    console.log("Adding customer:", { name, contact, email, password });
+    const { name, phone, email, password } = req.body;
+    console.log("Adding customer:", { name, phone, email, password });
     try {
-        const checkPhone = await getCustomerByPhoneModel(contact);
+        const checkPhone = await getCustomerByPhoneModel(phone);
         if (checkPhone) return res.status(400).json({ message: 'Phone already exist...' });
 
         const checkEmail = await getCustomerByEmailModel(email);
         if (checkEmail) return res.status(400).json({ message: 'Email already exist...' });
       
-        const customers = await addCustomerModel(name, email, contact, password);
+        const customers = await addCustomerModel(name, email, phone, password);
 
         const user = await getCustomerByEmailModel(email);
         res.status(201).json({ message: `User registered successfully for this '${email}' email.` });

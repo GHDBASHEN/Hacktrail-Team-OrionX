@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createFood, getAllFoods, updateFood, deleteFood, getAllCategories } from '../../services/AdminServices.js';
 
-const API_URL = 'https://hacktrail-team-orion-x-git-host-ghdbashens-projects.vercel.app/api'; // Define the base URL for images
+const API_URL = 'http://localhost:5000/api'; // Define the base URL for images
 
 const FoodManagement = () => {
     const [foods, setFoods] = useState([]);

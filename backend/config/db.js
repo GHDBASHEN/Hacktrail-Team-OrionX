@@ -16,10 +16,6 @@ try {
     connectionLimit: 10,
     queueLimit: 0,
     connectTimeout: 10000, // 10-second connection timeout
-    ssl: {
-      rejectUnauthorized: true,
-      minVersion: 'TLSv1.2' // Azure requires TLS 1.2
-    }
   });
 
   // Test connection immediately
@@ -27,7 +23,7 @@ try {
   await testConn.ping();
   testConn.release();
   
-  console.log('🔌 Connected to Azure MySQL successfully!');
+  console.log('🔌 Connected to local MySQL successfully!');
 
   // Add keep-alive every 4 minutes (240000ms)
   setInterval(async () => {
@@ -42,7 +38,7 @@ try {
   }, 240000);
 
 } catch (error) {
-  console.error('❌ Azure MySQL connection FAILED:', error.message);
+  console.error('❌ Local MySQL connection FAILED:', error.message);
   process.exit(1); // Exit process on DB connection failure
 }
 
