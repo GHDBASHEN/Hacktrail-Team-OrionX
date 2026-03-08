@@ -135,7 +135,7 @@ export const getAllOrders = async () => {
             c.cus_id,
             cust.name AS customer_name,
             cust.email AS customer_email,
-            cust.contact AS customer_contact,
+            cust.phone AS customer_contact,
             COALESCE(f.f_name, df.d_name) AS item_name,
             c.item_count
         FROM orders o

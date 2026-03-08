@@ -80,6 +80,10 @@ CREATE TABLE daily_food_daily_component (
 CREATE TABLE cart (
     cart_id INT AUTO_INCREMENT PRIMARY KEY,
     cus_id INT,
+    d_id INT NULL,
+    f_id INT NULL,
+    item_count INT DEFAULT 0,
+    total_amount DECIMAL(10,2) DEFAULT 0,
     created_date DATETIME,
 
     FOREIGN KEY (cus_id) REFERENCES customers(cus_id)
@@ -96,48 +100,51 @@ CREATE TABLE cart_items (
 );
 
 CREATE TABLE orders (
-    o_id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT AUTO_INCREMENT PRIMARY KEY,
     cus_id INT,
     emp_id INT,
-    order_status ENUM('Pending','Preparing','Ready','Completed','Cancelled'),
+    cart_id INT,
+    order_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    total_amount DECIMAL(10,2),
+    status ENUM('Pending','Preparing','Ready','Completed','Cancelled'),
+    payment_status ENUM('Pending','Paid','Failed') DEFAULT 'Pending',
     special_note TEXT,
     pickup_date DATE,
-    date_time DATETIME,
-    total DECIMAL(10,2),
 
     FOREIGN KEY (cus_id) REFERENCES customers(cus_id),
-    FOREIGN KEY (emp_id) REFERENCES employees(emp_id)
+    FOREIGN KEY (emp_id) REFERENCES employees(emp_id),
+    FOREIGN KEY (cart_id) REFERENCES cart(cart_id)
 );
 
 CREATE TABLE order_items (
     oi_id INT AUTO_INCREMENT PRIMARY KEY,
-    o_id INT,
+    order_id INT,
     d_id INT,
     qty INT,
     price DECIMAL(10,2),
 
-    FOREIGN KEY (o_id) REFERENCES orders(o_id),
+    FOREIGN KEY (order_id) REFERENCES orders(order_id),
     FOREIGN KEY (d_id) REFERENCES daily_food(d_id)
 );
 
 CREATE TABLE tokens (
     t_id INT AUTO_INCREMENT PRIMARY KEY,
-    o_id INT,
+    order_id INT,
     token_no INT,
     created_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-    FOREIGN KEY (o_id) REFERENCES orders(o_id)
+    FOREIGN KEY (order_id) REFERENCES orders(order_id)
 );
 
 CREATE TABLE payments (
     pay_id INT AUTO_INCREMENT PRIMARY KEY,
-    o_id INT,
+    order_id INT,
     pay_method ENUM('Cash','Card','Online'),
     pay_status ENUM('Pending','Paid','Failed'),
     amount DECIMAL(10,2),
     pay_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-    FOREIGN KEY (o_id) REFERENCES orders(o_id)
+    FOREIGN KEY (order_id) REFERENCES orders(order_id)
 );
 
 DELIMITER $$
@@ -146,9 +153,9 @@ CREATE TRIGGER gen_token
 AFTER INSERT ON orders
 FOR EACH ROW
 BEGIN
-    INSERT INTO tokens(o_id, token_no)
+    INSERT INTO tokens(order_id, token_no)
     VALUES(
-        NEW.o_id,
+        NEW.order_id,
         (SELECT IFNULL(MAX(token_no),0)+1 FROM tokens)
     );
 END$$
@@ -165,7 +172,7 @@ BEGIN
 
     SELECT stock INTO stock_val
     FROM inventory
-    WHERE f_id = (SELECT f_id FROM daily_foods WHERE d_id = NEW.d_id);
+    WHERE f_id = (SELECT f_id FROM daily_food WHERE d_id = NEW.d_id);
 
     IF stock_val < NEW.qty THEN
         SIGNAL SQLSTATE '45000'
@@ -183,7 +190,7 @@ FOR EACH ROW
 BEGIN
     UPDATE inventory
     SET stock = stock - NEW.qty
-    WHERE f_id = (SELECT f_id FROM daily_foods WHERE d_id = NEW.d_id);
+    WHERE f_id = (SELECT f_id FROM daily_food WHERE d_id = NEW.d_id);
 END$$
 
 DELIMITER ;
