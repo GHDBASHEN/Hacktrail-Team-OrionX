@@ -204,3 +204,46 @@ CREATE TABLE IF NOT EXISTS systemuser (
   refresh_token TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+ALTER TABLE daily_food
+ADD COLUMN f_id INT NULL,
+ADD FOREIGN KEY (f_id) REFERENCES food(f_id);
+
+
+DELIMITER $$
+CREATE TRIGGER check_stock
+BEFORE INSERT ON order_items
+FOR EACH ROW
+BEGIN
+    DECLARE stock_val INT;
+    DECLARE linked_f_id INT;
+
+    SELECT f_id INTO linked_f_id FROM daily_food WHERE d_id = NEW.d_id;
+
+    IF linked_f_id IS NOT NULL THEN
+        SELECT stock INTO stock_val
+        FROM inventory
+        WHERE f_id = linked_f_id;
+
+        IF stock_val < NEW.qty THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Stock not available';
+        END IF;
+    END IF;
+END$$
+
+CREATE TRIGGER reduce_stock
+AFTER INSERT ON order_items
+FOR EACH ROW
+BEGIN
+    DECLARE linked_f_id INT;
+
+    SELECT f_id INTO linked_f_id FROM daily_food WHERE d_id = NEW.d_id;
+
+    IF linked_f_id IS NOT NULL THEN
+        UPDATE inventory
+        SET stock = stock - NEW.qty
+        WHERE f_id = linked_f_id;
+    END IF;
+END$$
+DELIMITER ;"
