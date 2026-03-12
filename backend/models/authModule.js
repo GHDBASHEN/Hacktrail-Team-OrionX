@@ -11,7 +11,7 @@ import pool from '../config/db.js';
 export const saveSystemuserRefreshTokenModel = async (token, userId) => {
     const conn = await pool.getConnection();
     try {
-        await conn.query('UPDATE employees SET refresh_token = ? WHERE id = ?', [token, userId]);
+        await conn.query('UPDATE systemuser SET refresh_token = ? WHERE id = ?', [token, userId]);
     } finally {
         conn.release(); // ✅ Always release the connection
     }
@@ -36,27 +36,23 @@ export const saveCustomerRefreshTokenModel = async (token, customer_id) => {
 //     return rows[0].refresh_token === token;
 // };
 
-export const isRefreshTokenValidModel = async (userId, password, token) => {
-    // check employees first
-    const [empRows] = await pool.query(
-        'SELECT refresh_token, password FROM employees WHERE id = ?',
+export const isRefreshTokenValidModel = async (userId, token) => {
+    // Check systemuser first
+    const [sysRows] = await pool.query(
+        'SELECT refresh_token FROM systemuser WHERE id = ?',
         [userId]
     );
-    if (empRows.length > 0) {
-        const emp = empRows[0];
-        const passwordMatch = await bcrypt.compare(password, emp.password);
-        return passwordMatch && emp.refresh_token === token;
+    if (sysRows.length > 0) {
+        return sysRows[0].refresh_token === token;
     }
 
-    // then check customers
+    // Then check customers
     const [custRows] = await pool.query(
-        'SELECT refresh_token, password FROM customers WHERE cus_id = ?',
+        'SELECT refresh_token FROM customers WHERE cus_id = ?',
         [userId]
     );
     if (custRows.length > 0) {
-        const cust = custRows[0];
-        const passwordMatch = await bcrypt.compare(password, cust.password);
-        return passwordMatch && cust.refresh_token === token;
+        return custRows[0].refresh_token === token;
     }
 
     return false;

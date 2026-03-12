@@ -81,18 +81,24 @@ export const login = async (req, res) => {
             return res.status(400).json({ message: 'Password not matched.' });
         }
 
-        if (user.role == 'customer') {
-            const token = jwt.sign({ userId: user.cus_id, userEmail: user.email, role: user.role }, process.env.JWT_SECRET, { expiresIn: '2m' });
-            const refreshToken = jwt.sign({ userId: user.cus_id, userEmail: user.email, role: user.role }, process.env.JWT_REFRESH, { expiresIn: '2h' });
+        // Normalize roles across user types
+        let normalizedRole = user.role;
+        if (normalizedRole === 'employees' || normalizedRole === 'employee') normalizedRole = 'employee';
+        if (normalizedRole === 'customers') normalizedRole = 'customer';
+
+        if (normalizedRole === 'customer') {
+            const token = jwt.sign({ userId: user.cus_id, userEmail: user.email, role: normalizedRole }, process.env.JWT_SECRET, { expiresIn: '2m' });
+            const refreshToken = jwt.sign({ userId: user.cus_id, userEmail: user.email, role: normalizedRole }, process.env.JWT_REFRESH, { expiresIn: '2h' });
 
             await saveCustomerRefreshTokenModel(refreshToken, user.cus_id);
-            res.status(200).json({ message: 'Login successful', userEmail: user.email, id: user.cus_id, role: user.role, token, refreshToken });
+            res.status(200).json({ message: 'Login successful', userEmail: user.email, id: user.cus_id, role: normalizedRole, token, refreshToken });
         } else {
-            const token = jwt.sign({ userId: user.id, userEmail: user.email, role: user.role }, process.env.JWT_SECRET, { expiresIn: '2m' });
-            const refreshToken = jwt.sign({ userId: user.id, userEmail: user.email, role: user.role }, process.env.JWT_REFRESH, { expiresIn: '2h' });
+            const token = jwt.sign({ userId: user.id, userEmail: user.email, role: normalizedRole }, process.env.JWT_SECRET, { expiresIn: '2m' });
+            const refreshToken = jwt.sign({ userId: user.id, userEmail: user.email, role: normalizedRole }, process.env.JWT_REFRESH, { expiresIn: '2h' });
 
             await saveSystemuserRefreshTokenModel(refreshToken, user.id);
-            res.status(200).json({ message: 'Login successful', userEmail: user.email, id: user.id, role: user.role, token, refreshToken });
+            const identifier = user.email || user.employee_id || user.id;
+            res.status(200).json({ message: 'Login successful', userEmail: identifier, id: user.id, role: normalizedRole, token, refreshToken });
         }
 
     } catch (error) {

@@ -15,13 +15,15 @@ export const Login = () => {
         e.preventDefault();
         setLoading(true); // Set loading to true
         try {
-            const { userEmail, id, role, token, refreshToken } = await loginUser(user);
-            login(userEmail, id, role, token, refreshToken);
+            const { userEmail, id, role, token, refreshToken, name } = await loginUser(user);
+            login(name || userEmail, id, role, token, refreshToken);
 
-            if (role === 'admin') {
+            if (role === 'admin' || role === 'super_admin' || role === 'sub_admin') {
                 navigate('/superAdmin');
-            } else if (role === 'customer') {
+            } else if (role === 'customer' || role === 'customers') {
                 navigate('/');
+            } else if (role === 'employee' || role === 'employees') {
+                navigate('/employees');
             }
 
         } catch (error) {

@@ -31,20 +31,21 @@ import {
   getMealAvailability 
 } from '../controllers/admin/foodController.js';
 import upload from '../middleware/upload.js';
+import { userRole } from '../middleware/userRole.js';
 
 const router = express.Router();
 
-// POST /api/foods -> Create a new food item
-router.post('/', upload.single('image'), createFood);
+// POST /api/foods -> Create a new food item (employee/sub_admin/super_admin only)
+router.post('/', userRole, upload.single('image'), createFood);
 
-// GET /api/foods -> Get all food items (with optional query params: date, meal_type, available)
+// GET /api/foods -> Get all food items (open)
 router.get('/', getAllFoods);
 
-// PUT /api/foods/:id -> Update a food item
-router.put('/:id', upload.single('image'), updateFood);
+// PUT /api/foods/:id -> Update a food item (employee/sub_admin/super_admin only)
+router.put('/:id', userRole, upload.single('image'), updateFood);
 
-// DELETE /api/foods/:id -> Delete a food item
-router.delete('/:id', deleteFood);
+// DELETE /api/foods/:id -> Delete a food item (employee/sub_admin/super_admin only)
+router.delete('/:id', userRole, deleteFood);
 
 // GET /api/foods/today/menu -> Get today's menu (optional query param: meal_type)
 router.get('/today/menu', getTodaysMenu);

@@ -74,6 +74,7 @@ export const Header = () => {
               </Link>
             </div>
             <div className="flex items-center lg:order-2">
+              <span className="text-sm font-medium text-gray-600 mr-4">Logged as: <span className="text-blue-800">{user || 'Admin'}</span></span>
               <Link to="/superAdmin" className="text-blue-800 hover:bg-blue-50 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 lg:px-5 lg:py-2.5 mr-2 focus:outline-none">Dashboard Home</Link>
               <Link to="#" className="text-blue-800 hover:bg-blue-50 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 lg:px-5 lg:py-2.5 mr-2 focus:outline-none"><Logout /></Link>
             </div>

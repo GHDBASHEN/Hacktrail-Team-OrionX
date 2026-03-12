@@ -195,3 +195,12 @@ END$$
 
 DELIMITER ;
 
+CREATE TABLE IF NOT EXISTS systemuser (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  employee_id VARCHAR(50) UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  role ENUM('super_admin','sub_admin','employee') NOT NULL,
+  status ENUM('active','inactive') DEFAULT 'active',
+  refresh_token TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

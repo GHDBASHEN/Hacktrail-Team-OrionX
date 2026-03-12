@@ -19,18 +19,49 @@ export const registerEmployeeModel = async (pswd, employee_id) => {
   return result[0];
 };
 
-// Get employees & system users by email or phone
+// Get employees & system users by email, phone, or employee ID
 export const getUserByUserEmailORPswdModel = async (credential) => {
-    console.log(typeof (credential))
-    const [result] = await pool.query(
-        'SELECT id, password, role, email, refresh_token FROM employees WHERE email = ? OR phone = ?',
-        [credential, parseInt(credential, 10) || 0]
-        //[credential, credential]
-    );
-  console.log("User Found;;;;;;;;;;;;;;:", result[0]);
-  if (result.length === 0) return null; // Prevent accessing undefined index
+    console.log('Auth credential:', credential);
 
-  return result[0];
+    // Try systemuser first for super_admin and other system users
+    const [systemUserResult] = await pool.query(
+        'SELECT id, password, role, refresh_token, employee_id FROM systemuser WHERE employee_id = ?',
+        [credential]
+    );
+
+    if (systemUserResult.length > 0) {
+        const sysUser = systemUserResult[0];
+        const normRole = sysUser.role === 'employees' ? 'employee' : sysUser.role;
+
+        // Note: employees table does not have email or employee_id in the current schema
+        // We'll return what we have from systemuser
+        return {
+            id: sysUser.id,
+            password: sysUser.password,
+            role: normRole,
+            email: null, // email not available in systemuser table
+            refresh_token: sysUser.refresh_token,
+            employee_id: sysUser.employee_id
+        };
+    }
+
+    // Fallback: Try employees table (if necessary, though schema suggests it's separate)
+    // The provided employees table has: emp_id, emp_name, emp_role, emp_phone
+    const [result] = await pool.query(
+        'SELECT emp_id AS id, emp_role AS role FROM employees WHERE emp_phone = ?',
+        [credential]
+    );
+
+    if (result.length > 0) {
+        const user = result[0];
+        return {
+            id: user.id,
+            role: user.role === 'employees' ? 'employee' : user.role,
+            // Password and email are not in the provided employees table
+        };
+    }
+
+    return null;
 };
 
 export const getEmployeeByEmailModel = async (email) => {
